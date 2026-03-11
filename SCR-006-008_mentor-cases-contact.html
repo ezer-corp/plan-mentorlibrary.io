@@ -1,0 +1,613 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SCR-006~008 | 멘토단·고객사례·문의 — 멘토라이브러리 화면설계서</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; background:#F4F6F8; color:#2D3748; font-size:13px; }
+  .doc-header { background:#2D3748; color:#fff; padding:16px 32px; display:flex; justify-content:space-between; align-items:center; }
+  .doc-header .project { font-size:11px; color:#A0AEC0; }
+  .doc-header .screen-title { font-size:16px; font-weight:700; }
+  .doc-header .meta { font-size:11px; color:#A0AEC0; text-align:right; }
+  .spec-area { background:#fff; margin:16px 32px; border-radius:8px; border:1px solid #CBD2DA; overflow:hidden; }
+  .spec-area .spec-title { background:#E8ECF0; padding:10px 16px; font-weight:700; font-size:12px; border-bottom:1px solid #CBD2DA; display:flex; align-items:center; gap:8px; }
+  .spec-area .spec-title .badge { background:#4A5568; color:#fff; font-size:10px; padding:2px 8px; border-radius:10px; }
+  table { width:100%; border-collapse:collapse; }
+  table td, table th { padding:8px 16px; border-bottom:1px solid #E8ECF0; font-size:12px; }
+  table th { background:#F4F6F8; font-weight:600; color:#4A5568; width:160px; white-space:nowrap; }
+  table tr:last-child td, table tr:last-child th { border-bottom:none; }
+  .req { color:#E53E3E; font-weight:700; }
+  .opt { color:#A0AEC0; }
+  .wf-area { margin:0 32px 16px; }
+  .wf-label { font-size:11px; font-weight:700; color:#718096; text-transform:uppercase; letter-spacing:1px; padding:12px 0 8px; }
+  .wf-frame { background:#fff; border:2px solid #CBD2DA; border-radius:8px; overflow:hidden; max-width:1200px; }
+  .gnb { background:#fff; border-bottom:1px solid #E8ECF0; padding:0 40px; height:64px; display:flex; align-items:center; justify-content:space-between; }
+  .gnb .logo { font-size:16px; font-weight:800; color:#2D3748; }
+  .gnb .nav { display:flex; gap:32px; }
+  .gnb .nav a { font-size:13px; color:#4A5568; text-decoration:none; }
+  .gnb .nav a.active { color:#2D3748; font-weight:700; border-bottom:2px solid #2D3748; padding-bottom:2px; }
+  .gnb .gnb-cta { background:#4A5568; color:#fff; padding:8px 20px; border-radius:4px; font-size:12px; font-weight:600; }
+  .breadcrumb { background:#F4F6F8; padding:12px 40px; font-size:11px; color:#718096; border-bottom:1px solid #E8ECF0; }
+  .breadcrumb span { color:#4A5568; font-weight:600; }
+  .section { padding:60px 40px; }
+  .section-alt { background:#F4F6F8; }
+  .section-label { font-size:11px; font-weight:700; color:#718096; letter-spacing:2px; text-transform:uppercase; margin-bottom:8px; }
+  .section-title { font-size:22px; font-weight:800; color:#2D3748; margin-bottom:8px; }
+  .section-sub { font-size:13px; color:#718096; line-height:1.7; margin-bottom:40px; max-width:560px; }
+  .annotations { background:#FFFBEB; border:1px solid #F6E05E; border-radius:8px; padding:16px 20px; margin:12px 32px; }
+  .annotations h4 { font-size:11px; font-weight:700; color:#744210; margin-bottom:8px; }
+  .annotations ul { list-style:none; }
+  .annotations li { font-size:12px; color:#744210; padding:3px 0; padding-left:16px; position:relative; }
+  .annotations li::before { content:"▸"; position:absolute; left:0; }
+  .divider { border:none; border-top:1px solid #E8ECF0; margin:0 32px 0; }
+  .page-break { margin:40px 0; border-top:4px solid #CBD2DA; }
+
+  /* SCR-006 멘토단 전용 */
+  .mentor-page-header { background:#E8ECF0; padding:60px 40px; text-align:center; }
+  .mentor-page-header .ph-tag { display:inline-block; border:1px solid #CBD2DA; color:#4A5568; font-size:11px; padding:4px 14px; border-radius:20px; margin-bottom:16px; }
+  .mentor-page-header h1 { font-size:28px; font-weight:800; color:#2D3748; margin-bottom:12px; }
+  .mentor-page-header p { font-size:14px; color:#718096; max-width:500px; margin:0 auto; line-height:1.7; }
+
+  .mentor-philosophy { display:flex; gap:40px; align-items:flex-start; padding:40px; background:#fff; }
+  .mentor-philosophy .ph-text { flex:1; }
+  .mentor-philosophy .ph-text h3 { font-size:16px; font-weight:700; margin-bottom:12px; }
+  .mentor-philosophy .ph-text p { font-size:13px; color:#4A5568; line-height:1.8; }
+  .mentor-philosophy .ph-criteria { flex:1; }
+  .criteria-item { display:flex; gap:12px; align-items:flex-start; margin-bottom:16px; }
+  .criteria-num { background:#4A5568; color:#fff; width:24px; height:24px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; flex-shrink:0; margin-top:2px; }
+  .criteria-text h5 { font-size:13px; font-weight:700; margin-bottom:4px; }
+  .criteria-text p { font-size:12px; color:#718096; }
+
+  .filter-tabs { display:flex; gap:8px; margin-bottom:32px; flex-wrap:wrap; }
+  .filter-tab { padding:8px 20px; border:1.5px solid #CBD2DA; border-radius:20px; font-size:12px; color:#4A5568; cursor:pointer; }
+  .filter-tab.active { background:#4A5568; color:#fff; border-color:#4A5568; }
+
+  .mentor-grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:20px; }
+  .mentor-card { background:#fff; border:1px solid #CBD2DA; border-radius:8px; overflow:hidden; cursor:pointer; }
+  .mentor-card:hover { border-color:#4A5568; }
+  .mentor-photo { height:120px; background:#C8D0D8; display:flex; align-items:center; justify-content:center; }
+  .mentor-info { padding:16px; }
+  .mentor-info .name { font-size:14px; font-weight:700; margin-bottom:4px; }
+  .mentor-info .pos { font-size:11px; color:#718096; margin-bottom:8px; line-height:1.4; }
+  .mentor-info .field { font-size:10px; background:#E8ECF0; color:#4A5568; padding:2px 8px; border-radius:10px; display:inline-block; }
+  .mentor-info .intro { font-size:11px; color:#718096; margin-top:8px; line-height:1.5; }
+
+  /* 멘토 모달 (팝업) */
+  .modal-preview { background:#fff; border:2px dashed #CBD2DA; border-radius:8px; padding:24px; margin:32px 40px; }
+  .modal-preview .modal-label { font-size:10px; font-weight:700; color:#718096; letter-spacing:1px; margin-bottom:16px; }
+  .modal-inner { display:flex; gap:24px; }
+  .modal-photo { width:100px; height:100px; background:#C8D0D8; border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+  .modal-content h3 { font-size:18px; font-weight:800; margin-bottom:4px; }
+  .modal-content .mpos { font-size:12px; color:#718096; margin-bottom:12px; }
+  .modal-content .career-list { font-size:12px; color:#4A5568; line-height:1.8; }
+  .modal-content .field-tags { display:flex; gap:6px; margin-top:12px; flex-wrap:wrap; }
+  .modal-content .field-tags span { background:#E8ECF0; color:#4A5568; font-size:10px; padding:3px 10px; border-radius:10px; }
+
+  .mentor-apply { background:#F4F6F8; padding:40px; text-align:center; border-top:1px solid #E8ECF0; }
+  .mentor-apply h4 { font-size:16px; font-weight:700; margin-bottom:8px; }
+  .mentor-apply p { font-size:12px; color:#718096; margin-bottom:20px; }
+  .btn-outline { border:1.5px solid #4A5568; color:#4A5568; padding:10px 28px; border-radius:4px; font-size:12px; font-weight:600; display:inline-block; margin:0 6px; }
+  .btn-primary { background:#4A5568; color:#fff; padding:10px 28px; border-radius:4px; font-size:12px; font-weight:600; display:inline-block; margin:0 6px; }
+
+  /* SCR-007 고객사례 */
+  .cases-header { background:#E8ECF0; padding:60px 40px; }
+  .cases-header h1 { font-size:28px; font-weight:800; color:#2D3748; margin-bottom:8px; }
+  .cases-header p { font-size:14px; color:#718096; }
+
+  .case-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:20px; }
+  .case-card { background:#fff; border:1px solid #CBD2DA; border-radius:8px; overflow:hidden; cursor:pointer; }
+  .case-card-header { background:#E8ECF0; padding:20px 20px 16px; }
+  .case-service-tag { font-size:10px; background:#4A5568; color:#fff; padding:2px 10px; border-radius:10px; display:inline-block; margin-bottom:10px; }
+  .case-company { font-size:12px; color:#718096; margin-bottom:6px; }
+  .case-title { font-size:15px; font-weight:700; color:#2D3748; }
+  .case-body { padding:16px 20px; }
+  .case-result { font-size:12px; color:#4A5568; line-height:1.6; margin-bottom:12px; }
+  .case-metric { font-size:18px; font-weight:800; color:#2D3748; }
+  .case-metric-label { font-size:11px; color:#718096; }
+  .case-link { font-size:12px; color:#4A5568; font-weight:600; border-bottom:1px solid #4A5568; }
+
+  /* 사례 상세 (인라인 확장 프리뷰) */
+  .case-detail-preview { background:#fff; border:2px dashed #CBD2DA; border-radius:8px; padding:24px; margin:0 40px 32px; }
+  .case-detail-label { font-size:10px; font-weight:700; color:#718096; margin-bottom:16px; letter-spacing:1px; }
+  .case-story { display:grid; grid-template-columns:1fr 1fr 1fr; gap:24px; }
+  .case-story-col { }
+  .case-story-col h5 { font-size:11px; font-weight:700; color:#4A5568; text-transform:uppercase; letter-spacing:1px; margin-bottom:8px; padding-bottom:6px; border-bottom:2px solid #E8ECF0; }
+  .case-story-col p { font-size:12px; color:#718096; line-height:1.7; }
+
+  /* SCR-008 문의 */
+  .contact-layout { display:grid; grid-template-columns:1fr 400px; gap:0; min-height:500px; }
+  .contact-form-area { padding:60px 40px; }
+  .contact-form-area h2 { font-size:24px; font-weight:800; margin-bottom:8px; }
+  .contact-form-area .form-sub { font-size:13px; color:#718096; margin-bottom:40px; line-height:1.6; }
+  .form-row { margin-bottom:20px; }
+  .form-row label { display:block; font-size:12px; font-weight:600; color:#4A5568; margin-bottom:6px; }
+  .form-row label .req-mark { color:#E53E3E; }
+  .form-input { width:100%; border:1.5px solid #CBD2DA; border-radius:4px; padding:10px 14px; font-size:13px; color:#A0AEC0; background:#fff; }
+  .form-input.filled { color:#2D3748; border-color:#4A5568; }
+  .form-2col { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+  .form-select { width:100%; border:1.5px solid #CBD2DA; border-radius:4px; padding:10px 14px; font-size:13px; color:#A0AEC0; background:#fff; appearance:none; }
+  .form-textarea { width:100%; border:1.5px solid #CBD2DA; border-radius:4px; padding:10px 14px; font-size:13px; color:#A0AEC0; background:#fff; height:120px; resize:none; }
+  .form-check { display:flex; align-items:flex-start; gap:8px; }
+  .form-check input { margin-top:2px; }
+  .form-check label { font-size:12px; color:#718096; line-height:1.5; }
+  .form-check a { color:#4A5568; text-decoration:underline; }
+  .submit-btn { background:#4A5568; color:#fff; width:100%; padding:14px; border-radius:4px; font-size:14px; font-weight:700; margin-top:24px; text-align:center; border:none; }
+
+  .contact-info-area { background:#2D3748; padding:60px 40px; }
+  .contact-info-area h3 { font-size:18px; font-weight:700; color:#fff; margin-bottom:32px; }
+  .contact-item { margin-bottom:28px; }
+  .contact-item .ci-label { font-size:10px; font-weight:700; color:#A0AEC0; letter-spacing:1px; text-transform:uppercase; margin-bottom:6px; }
+  .contact-item .ci-value { font-size:13px; color:#fff; line-height:1.7; }
+  .contact-assurance { margin-top:40px; padding:20px; background:#3D4E62; border-radius:8px; }
+  .contact-assurance p { font-size:12px; color:#A0AEC0; line-height:1.7; }
+
+  /* 변경이력 */
+  .changelog { background:#fff; margin:16px 32px; border-radius:8px; border:1px solid #CBD2DA; overflow:hidden; }
+  .changelog .cl-title { background:#E8ECF0; padding:10px 16px; font-weight:700; font-size:12px; border-bottom:1px solid #CBD2DA; }
+  .footer { background:#2D3748; padding:32px 40px; }
+  .footer-bottom { font-size:11px; color:#718096; text-align:center; margin-top:16px; }
+</style>
+</head>
+<body>
+
+<!-- ==============================
+     SCR-006: 멘토단
+================================= -->
+<div class="doc-header">
+  <div>
+    <div class="project">멘토라이브러리 홈페이지 화면설계서 v1.0</div>
+    <div class="screen-title">SCR-006 · 멘토단</div>
+  </div>
+  <div class="meta">플랫폼: Web (아임웹)<br>작성일: 2026-03-11 | v1.0</div>
+</div>
+
+<div class="spec-area">
+  <div class="spec-title"><span class="badge">화면 명세</span> SCR-006 멘토단</div>
+  <table>
+    <tr><th>화면 ID</th><td>SCR-006</td><th>URL</th><td>/mentors</td></tr>
+    <tr><th>목적</th><td colspan="3">현업 전문가 네트워크의 깊이와 폭을 보여주며 "왜 멘토라이브러리인가"에 답변. B2B 신뢰 완성</td></tr>
+    <tr><th>주요 CTA</th><td colspan="3">"우리 조직에 맞는 멘토 연결" → SCR-008 문의 / "멘토로 지원하기" → 멘토 지원 폼</td></tr>
+  </table>
+</div>
+
+<div class="spec-area">
+  <div class="spec-title"><span class="badge">컴포넌트 명세</span></div>
+  <table>
+    <tr><th>컴포넌트</th><th>타입</th><th>필수</th><th>설명</th></tr>
+    <tr><td>페이지 헤더</td><td>Hero Banner</td><td class="req">✅</td><td>"이론이 아닌, 현장에서 온 전문가들" 헤드라인</td></tr>
+    <tr><td>멘토 선정 철학</td><td>2-col Text</td><td class="req">✅</td><td>멘토 선정 기준 3~4개 항목 [AI생성]</td></tr>
+    <tr><td>분야별 필터 탭</td><td>Tab Filter</td><td class="req">✅</td><td>전체 / 리더십 / 인재경영(HR) / 커리어 / 청년 — 아임웹 필터 기능</td></tr>
+    <tr><td>멘토 카드 목록</td><td>Card Grid (4열)</td><td class="req">✅</td><td>사진+이름+현직+분야+한줄소개. 클릭 시 모달</td></tr>
+    <tr><td>멘토 상세 모달</td><td>Modal/Popup</td><td class="req">✅</td><td>경력+전문분야+멘토링방식 상세. 아임웹 팝업 레이어</td></tr>
+    <tr><td>멘토 지원 CTA</td><td>CTA Section</td><td class="opt">-</td><td>"멘토로 함께하고 싶으신가요?" — 멘토 풀 확장용</td></tr>
+    <tr><td>기업 도입 CTA</td><td>CTA Banner</td><td class="req">✅</td><td>"우리 조직에 맞는 멘토를 연결해드립니다"</td></tr>
+  </table>
+</div>
+
+<div class="annotations">
+  <h4>⚠ 주의사항</h4>
+  <ul>
+    <li>멘토단 전체 목록 (사진, 이름, 현직, 전문분야, 소개글, 공개 동의) — 필수 소재. 없으면 멘토단 페이지 구현 불가</li>
+    <li>아임웹의 경우 필터 기능은 '카드 + 카테고리 필터' 섹션으로 구현. 멘토마다 카테고리 태그 지정 필요</li>
+    <li>모달 팝업: 아임웹 기본 팝업 기능 활용. 멘토 상세 정보 별도 입력 필요</li>
+    <li>멘토 수가 적을 경우 2열 또는 3열 그리드로 조정 권장</li>
+  </ul>
+</div>
+
+<hr class="divider">
+<div class="wf-area">
+  <div class="wf-label">📐 와이어프레임 — SCR-006 멘토단</div>
+  <div class="wf-frame">
+    <div class="gnb">
+      <div class="logo">MENTOR LIBRARY</div>
+      <div class="nav"><a href="#">서비스 ▾</a><a href="#" class="active">멘토단</a><a href="#">고객 사례</a><a href="#">문의</a></div>
+      <div class="gnb-cta">무료 상담 신청</div>
+    </div>
+    <div class="breadcrumb">홈 > <span>멘토단</span></div>
+
+    <!-- 페이지 헤더 -->
+    <div class="mentor-page-header">
+      <div class="ph-tag">Our Mentors</div>
+      <h1>이론이 아닌, 현장에서 온 전문가들</h1>
+      <p>각 분야의 최전선에서 활동하는 전문가들이 멘토라이브러리와 함께합니다</p>
+    </div>
+
+    <!-- 멘토 선정 철학 -->
+    <div class="mentor-philosophy">
+      <div class="ph-text">
+        <h3>멘토라이브러리가 멘토를 선정하는 기준</h3>
+        <p>멘토라이브러리의 멘토는 단순한 '전문가'가 아닙니다. 현장에서 직접 부딪히며 얻은 실전 경험과 인사이트를 갖춘 사람들입니다. 우리는 이론이 아닌 실전에서 검증된 전문가만을 멘토단에 합류시킵니다.</p>
+      </div>
+      <div class="ph-criteria">
+        <div class="criteria-item">
+          <div class="criteria-num">1</div>
+          <div class="criteria-text"><h5>현업 최전선 활동</h5><p>현재 각 분야에서 실제로 활동 중인 전문가</p></div>
+        </div>
+        <div class="criteria-item">
+          <div class="criteria-num">2</div>
+          <div class="criteria-text"><h5>실전 검증된 인사이트</h5><p>이론이 아닌 현장 경험 기반의 지식 보유</p></div>
+        </div>
+        <div class="criteria-item">
+          <div class="criteria-num">3</div>
+          <div class="criteria-text"><h5>진정성 있는 전달력</h5><p>전달하고 연결하는 능력과 의지를 갖춘 사람</p></div>
+        </div>
+        <div class="criteria-item">
+          <div class="criteria-num">4</div>
+          <div class="criteria-text"><h5>멘토라이브러리 철학 공유</h5><p>조직과 개인의 성장에 대한 비전을 공유</p></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 필터 + 멘토 목록 -->
+    <div class="section section-alt">
+      <div class="filter-tabs">
+        <div class="filter-tab active">전체</div>
+        <div class="filter-tab">리더십</div>
+        <div class="filter-tab">인재경영(HR)</div>
+        <div class="filter-tab">커리어</div>
+        <div class="filter-tab">청년 멘토링</div>
+      </div>
+      <div class="mentor-grid">
+        <!-- 멘토 카드 ×8 플레이스홀더 -->
+        <div class="mentor-card">
+          <div class="mentor-photo"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="13" r="7" fill="#A0AEC0"/><path d="M5 32c0-7 6-13 13-13s13 6 13 13" fill="#A0AEC0"/></svg></div>
+          <div class="mentor-info"><div class="name">멘토 이름</div><div class="pos">현직 소속 · 직책</div><span class="field">리더십</span><div class="intro">한 줄 소개 텍스트가 들어갑니다</div></div>
+        </div>
+        <div class="mentor-card">
+          <div class="mentor-photo"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="13" r="7" fill="#A0AEC0"/><path d="M5 32c0-7 6-13 13-13s13 6 13 13" fill="#A0AEC0"/></svg></div>
+          <div class="mentor-info"><div class="name">멘토 이름</div><div class="pos">현직 소속 · 직책</div><span class="field">인재경영(HR)</span><div class="intro">한 줄 소개 텍스트가 들어갑니다</div></div>
+        </div>
+        <div class="mentor-card">
+          <div class="mentor-photo"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="13" r="7" fill="#A0AEC0"/><path d="M5 32c0-7 6-13 13-13s13 6 13 13" fill="#A0AEC0"/></svg></div>
+          <div class="mentor-info"><div class="name">멘토 이름</div><div class="pos">현직 소속 · 직책</div><span class="field">커리어</span><div class="intro">한 줄 소개 텍스트가 들어갑니다</div></div>
+        </div>
+        <div class="mentor-card">
+          <div class="mentor-photo"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="13" r="7" fill="#A0AEC0"/><path d="M5 32c0-7 6-13 13-13s13 6 13 13" fill="#A0AEC0"/></svg></div>
+          <div class="mentor-info"><div class="name">멘토 이름</div><div class="pos">현직 소속 · 직책</div><span class="field">청년 멘토링</span><div class="intro">한 줄 소개 텍스트가 들어갑니다</div></div>
+        </div>
+        <div class="mentor-card">
+          <div class="mentor-photo"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="13" r="7" fill="#A0AEC0"/><path d="M5 32c0-7 6-13 13-13s13 6 13 13" fill="#A0AEC0"/></svg></div>
+          <div class="mentor-info"><div class="name">멘토 이름</div><div class="pos">현직 소속 · 직책</div><span class="field">리더십</span><div class="intro">한 줄 소개 텍스트가 들어갑니다</div></div>
+        </div>
+        <div class="mentor-card">
+          <div class="mentor-photo"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="13" r="7" fill="#A0AEC0"/><path d="M5 32c0-7 6-13 13-13s13 6 13 13" fill="#A0AEC0"/></svg></div>
+          <div class="mentor-info"><div class="name">멘토 이름</div><div class="pos">현직 소속 · 직책</div><span class="field">인재경영(HR)</span><div class="intro">한 줄 소개 텍스트가 들어갑니다</div></div>
+        </div>
+        <div class="mentor-card">
+          <div class="mentor-photo"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="13" r="7" fill="#A0AEC0"/><path d="M5 32c0-7 6-13 13-13s13 6 13 13" fill="#A0AEC0"/></svg></div>
+          <div class="mentor-info"><div class="name">멘토 이름</div><div class="pos">현직 소속 · 직책</div><span class="field">커리어</span><div class="intro">한 줄 소개 텍스트가 들어갑니다</div></div>
+        </div>
+        <div class="mentor-card">
+          <div class="mentor-photo"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="13" r="7" fill="#A0AEC0"/><path d="M5 32c0-7 6-13 13-13s13 6 13 13" fill="#A0AEC0"/></svg></div>
+          <div class="mentor-info"><div class="name">멘토 이름</div><div class="pos">현직 소속 · 직책</div><span class="field">청년 멘토링</span><div class="intro">한 줄 소개 텍스트가 들어갑니다</div></div>
+        </div>
+      </div>
+
+      <!-- 멘토 모달 프리뷰 -->
+      <div class="modal-preview" style="margin-top:32px;">
+        <div class="modal-label">▼ 카드 클릭 시 팝업 모달 — 멘토 상세 정보</div>
+        <div class="modal-inner">
+          <div class="modal-photo"><svg width="44" height="44" viewBox="0 0 44 44" fill="none"><circle cx="22" cy="16" r="9" fill="#A0AEC0"/><path d="M6 40c0-8.837 7.163-16 16-16s16 7.163 16 16" fill="#A0AEC0"/></svg></div>
+          <div class="modal-content">
+            <h3>멘토 이름</h3>
+            <div class="mpos">현직 소속 · 직책</div>
+            <div class="career-list">
+              · 경력 항목 텍스트가 들어갑니다<br>
+              · 경력 항목 텍스트가 들어갑니다<br>
+              · 주요 수행 프로젝트 또는 강점 요약
+            </div>
+            <div class="field-tags">
+              <span>전문분야1</span><span>전문분야2</span><span>멘토링방식</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 멘토 지원 + 기업 CTA -->
+    <div class="mentor-apply">
+      <h4>멘토로 함께하고 싶으신가요?</h4>
+      <p>현업 최전선에서 활동 중인 전문가라면, 멘토라이브러리와 함께 영향력을 나눠주세요</p>
+      <div class="btn-outline">멘토 지원하기</div>
+      <div class="btn-primary">기업 도입 문의</div>
+    </div>
+    <div class="footer"><div class="footer-bottom">© 2026 멘토라이브러리. All rights reserved.</div></div>
+  </div>
+</div>
+
+<!-- ==============================
+     SCR-007: 고객 사례
+================================= -->
+<div class="page-break"></div>
+<div class="doc-header">
+  <div>
+    <div class="project">멘토라이브러리 홈페이지 화면설계서 v1.0</div>
+    <div class="screen-title">SCR-007 · 고객 사례 (Cases)</div>
+  </div>
+  <div class="meta">플랫폼: Web (아임웹)<br>작성일: 2026-03-11 | v1.0</div>
+</div>
+
+<div class="spec-area">
+  <div class="spec-title"><span class="badge">화면 명세</span> SCR-007 고객 사례</div>
+  <table>
+    <tr><th>화면 ID</th><td>SCR-007</td><th>URL</th><td>/cases</td></tr>
+    <tr><th>목적</th><td colspan="3">실제 수행 사례로 "검증된 파트너" 증명. "우리 조직에도 효과가 있을까?" 해소</td></tr>
+    <tr><th>주요 CTA</th><td colspan="3">"비슷한 고민이 있으신가요?" → SCR-008 문의</td></tr>
+  </table>
+</div>
+
+<div class="spec-area">
+  <div class="spec-title"><span class="badge">컴포넌트 명세</span></div>
+  <table>
+    <tr><th>컴포넌트</th><th>타입</th><th>필수</th><th>설명</th></tr>
+    <tr><td>페이지 헤더</td><td>Banner</td><td class="req">✅</td><td>"함께 성장한 조직들이 증명합니다"</td></tr>
+    <tr><td>서비스 필터 탭</td><td>Tab Filter</td><td class="req">✅</td><td>전체 / 리더십 / 인재경영 / Self / 청년</td></tr>
+    <tr><td>사례 카드 목록</td><td>Card Grid (3열)</td><td class="req">✅</td><td>기업명(익명가능)+서비스+핵심성과 한 줄+자세히 보기</td></tr>
+    <tr><td>사례 상세</td><td>Expand / 별도 페이지</td><td class="req">✅</td><td>도입배경→솔루션→성과 스토리텔링. 아임웹 팝업 또는 별도 URL</td></tr>
+    <tr><td>문의 CTA</td><td>CTA Banner</td><td class="req">✅</td><td>"비슷한 고민이 있으신가요?"</td></tr>
+  </table>
+</div>
+
+<div class="annotations">
+  <h4>⚠ 주의사항</h4>
+  <ul>
+    <li>기업/기관 수행 사례 — 고객사 제공 필수. B2B 우선, 기존 클래스 후기도 임시 활용 가능</li>
+    <li>기업명 공개 여부 — 익명 처리 방침 사전 결정 필요 (예: "국내 대기업 A사")</li>
+    <li>핵심 성과 수치(퍼센트, 만족도 등) 있으면 카드 임팩트 대폭 향상</li>
+    <li>아임웹에서 사례 상세는 '팝업 레이어' 또는 개별 하위 URL(/cases/001) 방식 선택 필요</li>
+  </ul>
+</div>
+
+<hr class="divider">
+<div class="wf-area">
+  <div class="wf-label">📐 와이어프레임 — SCR-007 고객 사례</div>
+  <div class="wf-frame">
+    <div class="gnb">
+      <div class="logo">MENTOR LIBRARY</div>
+      <div class="nav"><a href="#">서비스 ▾</a><a href="#">멘토단</a><a href="#" class="active">고객 사례</a><a href="#">문의</a></div>
+      <div class="gnb-cta">무료 상담 신청</div>
+    </div>
+    <div class="breadcrumb">홈 > <span>고객 사례</span></div>
+
+    <div class="cases-header">
+      <div style="font-size:11px;color:#718096;margin-bottom:12px;font-weight:700;letter-spacing:2px;">CASES</div>
+      <h1>함께 성장한 조직들이 증명합니다</h1>
+      <p>실제 수행한 프로그램의 성과와 과정을 공유합니다</p>
+    </div>
+
+    <div class="section section-alt">
+      <div class="filter-tabs" style="margin-bottom:32px;">
+        <div class="filter-tab active">전체</div>
+        <div class="filter-tab">리더십과 전략</div>
+        <div class="filter-tab">인재경영</div>
+        <div class="filter-tab">Self as Enterprise</div>
+        <div class="filter-tab">청년 멘토링</div>
+      </div>
+      <div class="case-grid">
+        <div class="case-card">
+          <div class="case-card-header">
+            <div class="case-service-tag">리더십과 전략</div>
+            <div class="case-company">○○기업 (익명 또는 실명)</div>
+            <div class="case-title">중간관리자 리더십 전환 프로그램 도입</div>
+          </div>
+          <div class="case-body">
+            <div class="case-result">핵심 성과 한 줄 요약. 수치 또는 정성적 성과 기재.</div>
+            <div style="display:flex;gap:24px;margin-bottom:12px;">
+              <div><div class="case-metric">N%</div><div class="case-metric-label">리더십 역량 향상</div></div>
+              <div><div class="case-metric">N명</div><div class="case-metric-label">참여 인원</div></div>
+            </div>
+            <div class="case-link">사례 자세히 보기 →</div>
+          </div>
+        </div>
+        <div class="case-card">
+          <div class="case-card-header">
+            <div class="case-service-tag">인재경영</div>
+            <div class="case-company">○○기관 (익명 또는 실명)</div>
+            <div class="case-title">신임 HR담당자 역량 개발 프로그램</div>
+          </div>
+          <div class="case-body">
+            <div class="case-result">핵심 성과 한 줄 요약. 수치 또는 정성적 성과 기재.</div>
+            <div style="display:flex;gap:24px;margin-bottom:12px;">
+              <div><div class="case-metric">N개월</div><div class="case-metric-label">프로그램 기간</div></div>
+            </div>
+            <div class="case-link">사례 자세히 보기 →</div>
+          </div>
+        </div>
+        <div class="case-card">
+          <div class="case-card-header">
+            <div class="case-service-tag">청년 멘토링</div>
+            <div class="case-company">○○공공기관</div>
+            <div class="case-title">청년 커리어 멘토링 기관 도입 사례</div>
+          </div>
+          <div class="case-body">
+            <div class="case-result">핵심 성과 한 줄 요약. 수치 또는 정성적 성과 기재.</div>
+            <div style="display:flex;gap:24px;margin-bottom:12px;">
+              <div><div class="case-metric">N명</div><div class="case-metric-label">참여 청년</div></div>
+            </div>
+            <div class="case-link">사례 자세히 보기 →</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 사례 상세 프리뷰 -->
+      <div class="case-detail-preview" style="margin-top:32px;">
+        <div class="case-detail-label">▼ "사례 자세히 보기" 클릭 시 — 상세 팝업/페이지 구조</div>
+        <div class="case-story">
+          <div class="case-story-col">
+            <h5>도입 배경</h5>
+            <p>도입하게 된 배경과 조직의 고민 텍스트가 들어갑니다. 어떤 문제 상황이었는지 설명합니다.</p>
+          </div>
+          <div class="case-story-col">
+            <h5>솔루션</h5>
+            <p>멘토라이브러리가 제공한 솔루션 설명. 어떤 프로그램과 방식으로 접근했는지 기재합니다.</p>
+          </div>
+          <div class="case-story-col">
+            <h5>성과</h5>
+            <p>프로그램 수행 후의 변화와 성과. 수치 또는 정성적 결과를 기재합니다.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 문의 CTA -->
+    <div style="background:#4A5568;padding:40px;text-align:center;">
+      <div style="font-size:20px;font-weight:800;color:#fff;margin-bottom:8px;">비슷한 고민이 있으신가요?</div>
+      <div style="font-size:13px;color:#A0AEC0;margin-bottom:24px;">조직의 상황을 들려주세요. 가장 적합한 프로그램을 제안해드립니다.</div>
+      <div style="background:#fff;color:#2D3748;padding:12px 32px;border-radius:4px;font-size:13px;font-weight:700;display:inline-block;">무료 상담 신청하기</div>
+    </div>
+    <div class="footer"><div class="footer-bottom">© 2026 멘토라이브러리. All rights reserved.</div></div>
+  </div>
+</div>
+
+<!-- ==============================
+     SCR-008: 문의
+================================= -->
+<div class="page-break"></div>
+<div class="doc-header">
+  <div>
+    <div class="project">멘토라이브러리 홈페이지 화면설계서 v1.0</div>
+    <div class="screen-title">SCR-008 · 문의 (Contact)</div>
+  </div>
+  <div class="meta">플랫폼: Web (아임웹)<br>작성일: 2026-03-11 | v1.0</div>
+</div>
+
+<div class="spec-area">
+  <div class="spec-title"><span class="badge">화면 명세</span> SCR-008 문의</div>
+  <table>
+    <tr><th>화면 ID</th><td>SCR-008</td><th>URL</th><td>/contact</td></tr>
+    <tr><th>목적</th><td colspan="3">B2B 담당자가 부담 없이 상담 신청. 최소 정보 수집, 빠른 응대 보장</td></tr>
+    <tr><th>주요 전환</th><td colspan="3">폼 제출 → 완료 메시지 + 이메일 자동 발송 (아임웹 폼 기능)</td></tr>
+  </table>
+</div>
+
+<div class="spec-area">
+  <div class="spec-title"><span class="badge">폼 필드 명세</span></div>
+  <table>
+    <tr><th>필드명</th><th>타입</th><th>필수</th><th>placeholder / 옵션</th></tr>
+    <tr><td>이름</td><td>Text Input</td><td class="req">✅</td><td>"이름을 입력해주세요"</td></tr>
+    <tr><td>회사명</td><td>Text Input</td><td class="req">✅</td><td>"회사명 또는 기관명을 입력해주세요"</td></tr>
+    <tr><td>직책</td><td>Text Input</td><td class="req">✅</td><td>"직책을 입력해주세요" — B2B 필수 필드</td></tr>
+    <tr><td>연락처</td><td>Tel Input</td><td class="req">✅</td><td>"010-0000-0000"</td></tr>
+    <tr><td>이메일</td><td>Email Input</td><td class="req">✅</td><td>"이메일 주소를 입력해주세요"</td></tr>
+    <tr><td>관심 서비스</td><td>Select (다중)</td><td class="opt">-</td><td>리더십과 전략 / 인재경영 / Self as Enterprise / 청년 멘토링 / 기타</td></tr>
+    <tr><td>문의 내용</td><td>Textarea</td><td class="opt">-</td><td>"조직의 상황이나 고민을 자유롭게 작성해주세요"</td></tr>
+    <tr><td>개인정보 동의</td><td>Checkbox</td><td class="req">✅</td><td>개인정보처리방침 링크 포함</td></tr>
+  </table>
+</div>
+
+<div class="annotations">
+  <h4>⚠ 주의사항</h4>
+  <ul>
+    <li>아임웹 폼 기능으로 구현. 제출 시 관리자 이메일 자동 발송 설정 필요</li>
+    <li>제출 완료 후 리다이렉트 페이지 또는 인라인 완료 메시지 설정 (아임웹 폼 설정)</li>
+    <li>개인정보처리방침 페이지 별도 생성 필요 (아임웹 기본 제공 또는 별도 작성)</li>
+    <li>관심 서비스 필드는 담당자 사전 분류에 유용 — 필수 여부 재검토 권장</li>
+  </ul>
+</div>
+
+<hr class="divider">
+<div class="wf-area">
+  <div class="wf-label">📐 와이어프레임 — SCR-008 문의</div>
+  <div class="wf-frame">
+    <div class="gnb">
+      <div class="logo">MENTOR LIBRARY</div>
+      <div class="nav"><a href="#">서비스 ▾</a><a href="#">멘토단</a><a href="#">고객 사례</a><a href="#" class="active">문의</a></div>
+      <div class="gnb-cta">무료 상담 신청</div>
+    </div>
+    <div class="breadcrumb">홈 > <span>문의</span></div>
+
+    <div class="contact-layout">
+      <!-- 폼 영역 -->
+      <div class="contact-form-area">
+        <div style="font-size:11px;color:#718096;font-weight:700;letter-spacing:2px;margin-bottom:12px;">CONTACT</div>
+        <h2>첫 상담은 무료입니다</h2>
+        <p class="form-sub">조직의 고민이 무엇이든, 이야기에서 시작합니다.<br>양식을 작성하시면 영업일 기준 24시간 이내 연락드립니다.</p>
+
+        <div class="form-2col">
+          <div class="form-row">
+            <label>이름 <span class="req-mark">*</span></label>
+            <div class="form-input">이름을 입력해주세요</div>
+          </div>
+          <div class="form-row">
+            <label>회사명 <span class="req-mark">*</span></label>
+            <div class="form-input">회사명 또는 기관명</div>
+          </div>
+        </div>
+
+        <div class="form-2col">
+          <div class="form-row">
+            <label>직책 <span class="req-mark">*</span></label>
+            <div class="form-input">직책을 입력해주세요</div>
+          </div>
+          <div class="form-row">
+            <label>연락처 <span class="req-mark">*</span></label>
+            <div class="form-input">010-0000-0000</div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <label>이메일 <span class="req-mark">*</span></label>
+          <div class="form-input">이메일 주소를 입력해주세요</div>
+        </div>
+
+        <div class="form-row">
+          <label>관심 서비스</label>
+          <div class="form-select">서비스를 선택해주세요 ▾</div>
+        </div>
+
+        <div class="form-row">
+          <label>문의 내용</label>
+          <div class="form-textarea">조직의 상황이나 고민을 자유롭게 작성해주세요</div>
+        </div>
+
+        <div class="form-check">
+          <input type="checkbox" disabled>
+          <label>개인정보 수집·이용에 동의합니다. <a href="#">개인정보처리방침 보기</a></label>
+        </div>
+
+        <div class="submit-btn">상담 신청하기</div>
+      </div>
+
+      <!-- 연락처 정보 영역 -->
+      <div class="contact-info-area">
+        <h3>연락처 정보</h3>
+        <div class="contact-item">
+          <div class="ci-label">이메일</div>
+          <div class="ci-value">contact@mentorlibrary.co.kr</div>
+        </div>
+        <div class="contact-item">
+          <div class="ci-label">전화</div>
+          <div class="ci-value">000-0000-0000</div>
+        </div>
+        <div class="contact-item">
+          <div class="ci-label">주소</div>
+          <div class="ci-value">서울 강남구<br>케이씨빌딩</div>
+        </div>
+        <div class="contact-assurance">
+          <p>영업일 기준 24시간 이내에 담당자가 직접 연락드립니다.<br><br>복잡한 조직의 고민도 괜찮습니다. 먼저 들어보겠습니다.</p>
+        </div>
+      </div>
+    </div>
+    <div class="footer"><div class="footer-bottom">© 2026 멘토라이브러리. All rights reserved.</div></div>
+  </div>
+</div>
+
+<!-- 변경 이력 -->
+<div class="changelog">
+  <div class="cl-title">📋 변경 이력 — 전체 화면설계서</div>
+  <table>
+    <tr>
+      <th style="width:60px;">버전</th>
+      <th style="width:100px;">날짜</th>
+      <th>변경 화면</th>
+      <th>변경 내용</th>
+      <th style="width:100px;">요청자</th>
+    </tr>
+    <tr><td>v1.0</td><td>2026-03-11</td><td>전체 (SCR-001~008)</td><td>최초 작성</td><td>—</td></tr>
+  </table>
+</div>
+
+</body>
+</html>

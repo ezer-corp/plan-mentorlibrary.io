@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SCR-002~005 | 서비스 페이지 — 멘토라이브러리 화면설계서</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; background:#F4F6F8; color:#2D3748; font-size:13px; }
+  .doc-header { background:#2D3748; color:#fff; padding:16px 32px; display:flex; justify-content:space-between; align-items:center; }
+  .doc-header .project { font-size:11px; color:#A0AEC0; }
+  .doc-header .screen-title { font-size:16px; font-weight:700; }
+  .doc-header .meta { font-size:11px; color:#A0AEC0; text-align:right; }
+  .spec-area { background:#fff; margin:16px 32px; border-radius:8px; border:1px solid #CBD2DA; overflow:hidden; }
+  .spec-area .spec-title { background:#E8ECF0; padding:10px 16px; font-weight:700; font-size:12px; border-bottom:1px solid #CBD2DA; display:flex; align-items:center; gap:8px; }
+  .spec-area .spec-title .badge { background:#4A5568; color:#fff; font-size:10px; padding:2px 8px; border-radius:10px; }
+  table { width:100%; border-collapse:collapse; }
+  table td, table th { padding:8px 16px; border-bottom:1px solid #E8ECF0; font-size:12px; }
+  table th { background:#F4F6F8; font-weight:600; color:#4A5568; width:160px; white-space:nowrap; }
+  table tr:last-child td, table tr:last-child th { border-bottom:none; }
+  .req { color:#E53E3E; font-weight:700; }
+  .opt { color:#A0AEC0; }
+  .wf-area { margin:0 32px 16px; }
+  .wf-label { font-size:11px; font-weight:700; color:#718096; text-transform:uppercase; letter-spacing:1px; padding:12px 0 8px; }
+  .wf-frame { background:#fff; border:2px solid #CBD2DA; border-radius:8px; overflow:hidden; max-width:1200px; }
+  .gnb { background:#fff; border-bottom:1px solid #E8ECF0; padding:0 40px; height:64px; display:flex; align-items:center; justify-content:space-between; }
+  .gnb .logo { font-size:16px; font-weight:800; color:#2D3748; }
+  .gnb .nav { display:flex; gap:32px; }
+  .gnb .nav a { font-size:13px; color:#4A5568; text-decoration:none; }
+  .gnb .nav a.active { color:#2D3748; font-weight:700; border-bottom:2px solid #2D3748; padding-bottom:2px; }
+  .gnb .gnb-cta { background:#4A5568; color:#fff; padding:8px 20px; border-radius:4px; font-size:12px; font-weight:600; }
+  .breadcrumb { background:#F4F6F8; padding:12px 40px; font-size:11px; color:#718096; border-bottom:1px solid #E8ECF0; }
+  .breadcrumb span { color:#4A5568; font-weight:600; }
+
+  /* 서비스 헤더 */
+  .svc-header { background:#E8ECF0; padding:60px 40px; display:flex; gap:60px; align-items:center; }
+  .svc-header-text { flex:1; }
+  .svc-tag { display:inline-block; border:1px solid #CBD2DA; color:#4A5568; font-size:11px; padding:4px 12px; border-radius:20px; margin-bottom:16px; font-weight:600; }
+  .svc-headline { font-size:28px; font-weight:800; line-height:1.4; color:#2D3748; margin-bottom:12px; }
+  .svc-sub { font-size:14px; color:#718096; line-height:1.7; max-width:480px; }
+  .svc-visual { width:320px; height:200px; background:#C8D0D8; border-radius:8px; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+
+  /* 서비스 탭 네비 */
+  .svc-tabs { border-bottom:2px solid #E8ECF0; display:flex; padding:0 40px; background:#fff; }
+  .svc-tab { padding:16px 24px; font-size:13px; color:#718096; cursor:pointer; border-bottom:2px solid transparent; margin-bottom:-2px; }
+  .svc-tab.active { color:#2D3748; font-weight:700; border-bottom:2px solid #2D3748; }
+
+  .section { padding:60px 40px; }
+  .section-alt { background:#F4F6F8; }
+  .section-label { font-size:11px; font-weight:700; color:#718096; letter-spacing:2px; text-transform:uppercase; margin-bottom:8px; }
+  .section-title { font-size:22px; font-weight:800; color:#2D3748; margin-bottom:8px; }
+  .section-sub { font-size:13px; color:#718096; line-height:1.7; margin-bottom:40px; max-width:560px; }
+
+  /* 문제-해결 */
+  .qa-layout { display:grid; grid-template-columns:1fr 1fr; gap:40px; }
+  .qa-col h4 { font-size:14px; font-weight:700; margin-bottom:20px; color:#2D3748; display:flex; align-items:center; gap:8px; }
+  .qa-badge-q { background:#E8ECF0; color:#4A5568; font-size:10px; padding:2px 10px; border-radius:10px; }
+  .qa-badge-a { background:#4A5568; color:#fff; font-size:10px; padding:2px 10px; border-radius:10px; }
+  .qa-item { padding:14px 16px; margin-bottom:12px; border-radius:6px; font-size:13px; line-height:1.6; }
+  .qa-item-q { background:#F4F6F8; border-left:3px solid #CBD2DA; color:#4A5568; }
+  .qa-item-a { background:#E8ECF0; border-left:3px solid #4A5568; color:#2D3748; }
+
+  /* 프로그램 구성 */
+  .program-list { display:flex; flex-direction:column; gap:16px; }
+  .program-item { background:#fff; border:1px solid #CBD2DA; border-radius:8px; padding:20px 24px; display:flex; gap:24px; align-items:flex-start; }
+  .program-num { background:#4A5568; color:#fff; width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; flex-shrink:0; }
+  .program-content h5 { font-size:14px; font-weight:700; margin-bottom:6px; }
+  .program-content p { font-size:12px; color:#718096; line-height:1.6; }
+  .program-meta { margin-top:8px; display:flex; gap:12px; }
+  .program-tag { font-size:10px; background:#E8ECF0; color:#4A5568; padding:2px 8px; border-radius:10px; }
+
+  /* 추천 대상 */
+  .target-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; }
+  .target-card { background:#fff; border:1px solid #CBD2DA; border-radius:8px; padding:20px; text-align:center; }
+  .target-icon { width:48px; height:48px; background:#E8ECF0; border-radius:50%; margin:0 auto 12px; }
+  .target-card h5 { font-size:13px; font-weight:700; margin-bottom:6px; }
+  .target-card p { font-size:11px; color:#718096; line-height:1.5; }
+
+  /* 관련 멘토 */
+  .mentor-row { display:flex; gap:20px; }
+  .mentor-card { flex:1; max-width:240px; background:#fff; border:1px solid #CBD2DA; border-radius:8px; overflow:hidden; }
+  .mentor-photo { height:100px; background:#C8D0D8; display:flex; align-items:center; justify-content:center; }
+  .mentor-info { padding:16px; }
+  .mentor-info .name { font-size:14px; font-weight:700; margin-bottom:4px; }
+  .mentor-info .pos { font-size:11px; color:#718096; }
+
+  /* CTA 배너 */
+  .cta-banner { background:#2D3748; padding:40px; text-align:center; }
+  .cta-banner h3 { font-size:20px; font-weight:800; color:#fff; margin-bottom:8px; }
+  .cta-banner p { font-size:13px; color:#A0AEC0; margin-bottom:24px; }
+  .btn-white { background:#fff; color:#2D3748; padding:12px 32px; border-radius:4px; font-size:13px; font-weight:700; display:inline-block; }
+
+  /* FOOTER */
+  .footer { background:#2D3748; border-top:1px solid #4A5568; padding:32px 40px; }
+  .footer-bottom { font-size:11px; color:#718096; text-align:center; margin-top:16px; }
+
+  .annotations { background:#FFFBEB; border:1px solid #F6E05E; border-radius:8px; padding:16px 20px; margin:12px 32px; }
+  .annotations h4 { font-size:11px; font-weight:700; color:#744210; margin-bottom:8px; text-transform:uppercase; letter-spacing:1px; }
+  .annotations ul { list-style:none; }
+  .annotations li { font-size:12px; color:#744210; padding:3px 0; padding-left:16px; position:relative; }
+  .annotations li::before { content:"▸"; position:absolute; left:0; }
+  .divider { border:none; border-top:1px solid #E8ECF0; margin:0 32px; }
+
+  /* 페이지 분리 구분선 */
+  .page-sep { margin:32px; padding:20px; background:#E8ECF0; border-radius:8px; text-align:center; }
+  .page-sep h2 { font-size:18px; font-weight:800; color:#4A5568; margin-bottom:4px; }
+  .page-sep p { font-size:12px; color:#718096; }
+</style>
+</head>
+<body>
+
+<!-- === SCR-002: 리더십과 전략 === -->
+<div class="doc-header">
+  <div>
+    <div class="project">멘토라이브러리 홈페이지 화면설계서 v1.0</div>
+    <div class="screen-title">SCR-002 · 서비스 — 리더십과 전략</div>
+  </div>
+  <div class="meta">플랫폼: Web (아임웹)<br>작성일: 2026-03-11 | v1.0</div>
+</div>
+
+<div class="spec-area">
+  <div class="spec-title"><span class="badge">화면 명세</span> SCR-002 리더십과 전략</div>
+  <table>
+    <tr><th>화면 ID</th><td>SCR-002</td><th>URL</th><td>/service/leadership</td></tr>
+    <tr><th>목적</th><td colspan="3">경영자·리더 보유 기업 담당자(HR/경영지원)가 "우리 조직에 필요한 것"임을 인식하고 상담 신청으로 연결</td></tr>
+    <tr><th>주요 CTA</th><td colspan="3">"리더십 프로그램 문의하기" → SCR-007 문의 페이지</td></tr>
+  </table>
+</div>
+
+<div class="spec-area">
+  <div class="spec-title"><span class="badge">컴포넌트 명세</span></div>
+  <table>
+    <tr><th>컴포넌트</th><th>타입</th><th>필수</th><th>설명</th></tr>
+    <tr><td>GNB (서비스 활성)</td><td>Header</td><td class="req">✅</td><td>아임웹 공통 헤더, '서비스' 메뉴 활성 상태</td></tr>
+    <tr><td>브레드크럼</td><td>Breadcrumb</td><td class="req">✅</td><td>홈 > 서비스 > 리더십과 전략</td></tr>
+    <tr><td>서비스 탭</td><td>Tab Nav</td><td class="req">✅</td><td>4개 서비스 탭 전환 (아임웹 탭 섹션)</td></tr>
+    <tr><td>서비스 헤더</td><td>Hero Banner</td><td class="req">✅</td><td>서비스명 + 헤드라인 + 서브카피 + 이미지</td></tr>
+    <tr><td>문제-해결 구조</td><td>2-col Layout</td><td class="req">✅</td><td>"이런 고민이 있으신가요?" / "이렇게 해결합니다"</td></tr>
+    <tr><td>프로그램 구성</td><td>List</td><td class="req">✅</td><td>모듈명 + 설명 + 시간/방식 태그 (소재 제공 필요)</td></tr>
+    <tr><td>추천 대상</td><td>Card Grid</td><td class="req">✅</td><td>3개 추천 대상 직군/기업 유형</td></tr>
+    <tr><td>관련 멘토</td><td>Profile Card</td><td class="req">✅</td><td>해당 서비스 담당 멘토 2~3인</td></tr>
+    <tr><td>문의 CTA</td><td>CTA Banner</td><td class="req">✅</td><td>"리더십 프로그램 문의하기"</td></tr>
+  </table>
+</div>
+
+<div class="annotations">
+  <h4>⚠ 주의사항</h4>
+  <ul>
+    <li>프로그램 구성(모듈명, 시간, 방식) — 고객사 상세 제공 필요. 현재는 플레이스홀더로 구성</li>
+    <li>관련 멘토 — 리더십 분야 멘토 2~3인 정보 제공 필요</li>
+    <li>아임웹에서 4개 서비스 페이지는 동일 레이아웃에 콘텐츠만 교체하는 방식 권장</li>
+  </ul>
+</div>
+
+<hr class="divider">
+
+<div class="wf-area">
+  <div class="wf-label">📐 와이어프레임 — SCR-002 리더십과 전략</div>
+  <div class="wf-frame">
+    <div class="gnb">
+      <div class="logo">MENTOR LIBRARY</div>
+      <div class="nav">
+        <a href="#" class="active">서비스 ▾</a>
+        <a href="#">멘토단</a>
+        <a href="#">고객 사례</a>
+        <a href="#">문의</a>
+      </div>
+      <div class="gnb-cta">무료 상담 신청</div>
+    </div>
+    <div class="breadcrumb">홈 > 서비스 > <span>리더십과 전략</span></div>
+
+    <!-- 서비스 탭 네비 -->
+    <div class="svc-tabs">
+      <div class="svc-tab active">리더십과 전략</div>
+      <div class="svc-tab">인재경영</div>
+      <div class="svc-tab">Self as Enterprise</div>
+      <div class="svc-tab">청년 멘토링</div>
+    </div>
+
+    <!-- 서비스 헤더 -->
+    <div class="svc-header">
+      <div class="svc-header-text">
+        <div class="svc-tag">Leadership & Strategy</div>
+        <div class="svc-headline">전략은 실행될 때만<br>의미가 있습니다</div>
+        <div class="svc-sub">경영자와 리더가 전략을 조직의 행동과 성과로 연결하도록 설계합니다</div>
+      </div>
+      <div class="svc-visual">
+        <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
+          <path d="M10 50L25 30L35 40L50 15" stroke="#A0AEC0" stroke-width="3" fill="none" stroke-linecap="round"/>
+          <circle cx="50" cy="15" r="5" fill="#A0AEC0"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- 문제-해결 -->
+    <div class="section section-alt">
+      <div class="section-label">Pain Points & Solution</div>
+      <div class="section-title">이런 고민이 있으신가요?</div>
+      <div class="qa-layout">
+        <div class="qa-col">
+          <h4><span class="qa-badge-q">고민</span> 조직의 현실</h4>
+          <div class="qa-item qa-item-q">전략은 있는데, 현장에서 실행이 안 됩니다</div>
+          <div class="qa-item qa-item-q">리더들이 방향을 잘 모르거나 팀원들과 단절되어 있습니다</div>
+          <div class="qa-item qa-item-q">경영진의 의사결정이 일관성이 없어 조직이 흔들립니다</div>
+        </div>
+        <div class="qa-col">
+          <h4><span class="qa-badge-a">해결</span> 멘토라이브러리 접근</h4>
+          <div class="qa-item qa-item-a">실행 가능한 리더십 언어로 전략을 현장과 연결합니다</div>
+          <div class="qa-item qa-item-a">리더와 팀 간 정렬을 위한 워크샵과 코칭을 설계합니다</div>
+          <div class="qa-item qa-item-a">의사결정 프레임워크를 조직 문화로 내재화합니다</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 프로그램 구성 -->
+    <div class="section">
+      <div class="section-label">Programs</div>
+      <div class="section-title">프로그램 구성</div>
+      <div class="section-sub">조직의 니즈에 따라 커스터마이징 가능합니다 (소재 제공 후 업데이트)</div>
+      <div class="program-list">
+        <div class="program-item">
+          <div class="program-num">1</div>
+          <div class="program-content">
+            <h5>프로그램 모듈명 A</h5>
+            <p>프로그램 설명 텍스트 내용이 들어갑니다. 모듈의 목표와 커버하는 주제를 기재합니다.</p>
+            <div class="program-meta">
+              <span class="program-tag">반일/전일</span>
+              <span class="program-tag">워크샵</span>
+              <span class="program-tag">대상: 임원·팀장</span>
+            </div>
+          </div>
+        </div>
+        <div class="program-item">
+          <div class="program-num">2</div>
+          <div class="program-content">
+            <h5>프로그램 모듈명 B</h5>
+            <p>프로그램 설명 텍스트 내용이 들어갑니다. 모듈의 목표와 커버하는 주제를 기재합니다.</p>
+            <div class="program-meta">
+              <span class="program-tag">4주 과정</span>
+              <span class="program-tag">코칭</span>
+              <span class="program-tag">대상: 경영진</span>
+            </div>
+          </div>
+        </div>
+        <div class="program-item">
+          <div class="program-num">3</div>
+          <div class="program-content">
+            <h5>프로그램 모듈명 C</h5>
+            <p>프로그램 설명 텍스트 내용이 들어갑니다. 모듈의 목표와 커버하는 주제를 기재합니다.</p>
+            <div class="program-meta">
+              <span class="program-tag">온/오프라인</span>
+              <span class="program-tag">그룹 과정</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 추천 대상 -->
+    <div class="section section-alt">
+      <div class="section-label">For Whom</div>
+      <div class="section-title">이런 기업·조직에 추천합니다</div>
+      <div class="target-grid">
+        <div class="target-card">
+          <div class="target-icon"></div>
+          <h5>빠르게 성장하는 스타트업</h5>
+          <p>리더십 구조를 체계화해야 하는 시점의 조직</p>
+        </div>
+        <div class="target-card">
+          <div class="target-icon"></div>
+          <h5>전략 재편 중인 중견기업</h5>
+          <p>새로운 방향으로 조직을 정렬해야 하는 기업</p>
+        </div>
+        <div class="target-card">
+          <div class="target-icon"></div>
+          <h5>HR·경영지원 담당자</h5>
+          <p>리더십 개발 프로그램을 도입하려는 기업 담당자</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- 관련 멘토 -->
+    <div class="section">
+      <div class="section-label">Related Mentors</div>
+      <div class="section-title">이 서비스를 담당하는 멘토</div>
+      <div class="mentor-row">
+        <div class="mentor-card">
+          <div class="mentor-photo"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="13" r="7" fill="#A0AEC0"/><path d="M5 32c0-7 6-13 13-13s13 6 13 13" fill="#A0AEC0"/></svg></div>
+          <div class="mentor-info"><div class="name">멘토 이름</div><div class="pos">현직 텍스트</div></div>
+        </div>
+        <div class="mentor-card">
+          <div class="mentor-photo"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="13" r="7" fill="#A0AEC0"/><path d="M5 32c0-7 6-13 13-13s13 6 13 13" fill="#A0AEC0"/></svg></div>
+          <div class="mentor-info"><div class="name">멘토 이름</div><div class="pos">현직 텍스트</div></div>
+        </div>
+        <div class="mentor-card">
+          <div class="mentor-photo"><svg width="36" height="36" viewBox="0 0 36 36" fill="none"><circle cx="18" cy="13" r="7" fill="#A0AEC0"/><path d="M5 32c0-7 6-13 13-13s13 6 13 13" fill="#A0AEC0"/></svg></div>
+          <div class="mentor-info"><div class="name">멘토 이름</div><div class="pos">현직 텍스트</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="cta-banner">
+      <h3>리더십 프로그램이 필요하신가요?</h3>
+      <p>조직의 상황을 들려주세요. 최적의 프로그램을 제안해드립니다.</p>
+      <div class="btn-white">리더십 프로그램 문의하기</div>
+    </div>
+
+    <div class="footer">
+      <div style="text-align:center; color:#718096; font-size:12px;">아임웹 공통 푸터 (SCR-001과 동일)</div>
+      <div class="footer-bottom">© 2026 멘토라이브러리. All rights reserved.</div>
+    </div>
+  </div>
+</div>
+
+<!-- === SCR-003~005 페이지 구조 안내 === -->
+<div style="margin:24px 32px;">
+  <div class="page-sep">
+    <h2>SCR-003 · 인재경영 / SCR-004 · Self as Enterprise / SCR-005 · 청년 멘토링</h2>
+    <p>동일한 레이아웃 구조. 아래는 각 페이지별 차이 명세입니다.</p>
+  </div>
+</div>
+
+<!-- SCR-003 명세 -->
+<div class="spec-area">
+  <div class="spec-title"><span class="badge">SCR-003</span> 인재경영 페이지 차이 명세</div>
+  <table>
+    <tr><th>항목</th><th>내용</th></tr>
+    <tr><th>URL</th><td>/service/talent</td></tr>
+    <tr><th>서비스 태그</th><td>Talent Management</td></tr>
+    <tr><th>헤드라인</th><td>"인재를 비용이 아닌, 조직의 가장 강력한 경쟁우위로"</td></tr>
+    <tr><th>서브카피</th><td>"경영자와 CHRO가 인재를 전략적으로 설계하고 운영하도록 지원합니다"</td></tr>
+    <tr><th>주요 고민</th><td>인재 이탈 방지, 채용 전략, 성과관리 체계, 조직문화 설계</td></tr>
+    <tr><th>추가 섹션</th><td>전준수 대표 경력 연결 섹션 추가 (주재원→인사총괄→인재경영원 수장 스토리라인)</td></tr>
+    <tr><th>추천 대상</th><td>CHRO, HR팀장, 인사담당자 보유 기업</td></tr>
+    <tr><th>CTA 문구</th><td>"인재경영 프로그램 문의하기"</td></tr>
+    <tr><th>소재 필요</th><td>프로그램 상세 구성, HR 분야 멘토 2~3인</td></tr>
+  </table>
+</div>
+
+<div class="spec-area">
+  <div class="spec-title"><span class="badge">SCR-004</span> Self as Enterprise 페이지 차이 명세</div>
+  <table>
+    <tr><th>항목</th><th>내용</th></tr>
+    <tr><th>URL</th><td>/service/self</td></tr>
+    <tr><th>서비스 태그</th><td>Self as Enterprise</td></tr>
+    <tr><th>헤드라인</th><td>"당신의 커리어를 하나의 기업처럼 경영하세요"</td></tr>
+    <tr><th>서브카피</th><td>"커리어, 브랜드, 선택의 기준을 전략적으로 설계하고 축적합니다"</td></tr>
+    <tr><th>추가 섹션</th><td>"Self as Enterprise란?" 개념 설명 섹션 추가 (2col: 개념 설명 + 비주얼)</td></tr>
+    <tr><th>주요 타깃</th><td>B2C/B2G. 커리어 전환점의 직장인, 퇴직 준비자, MZ세대 리더</td></tr>
+    <tr><th>CTA 문구</th><td>"커리어 전략 상담 신청"</td></tr>
+    <tr><th>소재 필요</th><td>프로그램 상세 구성, 커리어·브랜딩 분야 멘토 2~3인</td></tr>
+  </table>
+</div>
+
+<div class="spec-area">
+  <div class="spec-title"><span class="badge">SCR-005</span> 청년 멘토링 페이지 차이 명세</div>
+  <table>
+    <tr><th>항목</th><th>내용</th></tr>
+    <tr><th>URL</th><td>/service/youth</td></tr>
+    <tr><th>서비스 태그</th><td>Youth Mentoring</td></tr>
+    <tr><th>헤드라인</th><td>"전문성과 따뜻함을 겸비한 멘토와, 변화를 원하는 청년을 연결합니다"</td></tr>
+    <tr><th>이중 타깃</th><td>B2G/B2B 기관 도입 CTA + B2C 청년 개인 신청 CTA 병존</td></tr>
+    <tr><th>추가 섹션</th><td>기관 도입 프로세스 안내 섹션 (단계별 플로우: 도입 상담 → 매칭 → 운영 → 성과 보고)</td></tr>
+    <tr><th>추가 섹션</th><td>청년 참여 후기 2~3개 슬라이드 (소재 제공 필요)</td></tr>
+    <tr><th>CTA 구성</th><td>"멘토링 신청하기" (청년 개인용) + "기관 도입 문의" (B2B/B2G) — 2개 병렬 버튼</td></tr>
+    <tr><th>소재 필요</th><td>청년 참여 후기, 청년 멘토링 참여 멘토 3~4인</td></tr>
+  </table>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>INDEX | 멘토라이브러리 화면설계서 v1.0</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; background:#F4F6F8; color:#2D3748; font-size:13px; }
+
+  .cover { background:#2D3748; color:#fff; padding:60px 48px; }
+  .cover .project-label { font-size:11px; color:#A0AEC0; letter-spacing:2px; text-transform:uppercase; margin-bottom:16px; }
+  .cover h1 { font-size:32px; font-weight:800; margin-bottom:8px; letter-spacing:-0.5px; }
+  .cover .sub { font-size:15px; color:#A0AEC0; margin-bottom:40px; }
+  .cover-meta { display:flex; gap:40px; }
+  .cover-meta .m { }
+  .cover-meta .m .label { font-size:10px; color:#718096; text-transform:uppercase; letter-spacing:1px; margin-bottom:4px; }
+  .cover-meta .m .val { font-size:13px; color:#E2E8F0; }
+
+  .section { padding:40px 48px; }
+  .section-title { font-size:16px; font-weight:800; color:#2D3748; margin-bottom:24px; border-left:4px solid #4A5568; padding-left:12px; }
+
+  /* 화면 목록 */
+  .screen-list { display:flex; flex-direction:column; gap:8px; }
+  .screen-item { background:#fff; border:1px solid #CBD2DA; border-radius:6px; padding:14px 20px; display:flex; align-items:center; gap:16px; }
+  .screen-item .scr-id { font-size:11px; font-weight:700; color:#718096; width:72px; flex-shrink:0; font-family:monospace; }
+  .screen-item .scr-name { font-size:14px; font-weight:700; flex:1; }
+  .screen-item .scr-url { font-size:11px; color:#718096; font-family:monospace; width:200px; }
+  .screen-item .scr-priority { font-size:10px; padding:2px 10px; border-radius:10px; font-weight:700; }
+  .p-high { background:#FEF3C7; color:#92400E; }
+  .p-med { background:#E8ECF0; color:#4A5568; }
+  .screen-item .scr-file { font-size:11px; color:#4A5568; text-decoration:underline; width:220px; flex-shrink:0; }
+
+  /* 흐름도 */
+  .flow-area { background:#fff; border:1px solid #CBD2DA; border-radius:8px; padding:32px; font-family:monospace; font-size:12px; line-height:2; }
+  .flow-area pre { color:#2D3748; white-space:pre; }
+  .flow-note { font-size:11px; color:#718096; margin-top:16px; font-family:sans-serif; }
+
+  /* 소재 체크리스트 */
+  .checklist { }
+  .cl-section { margin-bottom:24px; }
+  .cl-section h4 { font-size:13px; font-weight:700; color:#4A5568; margin-bottom:12px; padding-bottom:6px; border-bottom:1px solid #E8ECF0; }
+  .cl-item { display:flex; align-items:flex-start; gap:10px; padding:8px 0; border-bottom:1px solid #F4F6F8; }
+  .cl-item:last-child { border-bottom:none; }
+  .cl-box { width:16px; height:16px; border:2px solid #CBD2DA; border-radius:3px; flex-shrink:0; margin-top:1px; }
+  .cl-box.done { background:#4A5568; border-color:#4A5568; }
+  .cl-content .cl-title { font-size:13px; font-weight:600; margin-bottom:2px; }
+  .cl-content .cl-desc { font-size:11px; color:#718096; }
+  .cl-priority { font-size:10px; padding:1px 8px; border-radius:10px; flex-shrink:0; font-weight:700; }
+  .prio-high { background:#FEF3C7; color:#92400E; }
+  .prio-med { background:#E8ECF0; color:#4A5568; }
+  .prio-low { background:#F0FFF4; color:#276749; }
+
+  /* 아임웹 구현 가이드 */
+  .impl-table { background:#fff; border:1px solid #CBD2DA; border-radius:8px; overflow:hidden; }
+  .impl-table table { width:100%; border-collapse:collapse; }
+  .impl-table td, .impl-table th { padding:10px 16px; border-bottom:1px solid #E8ECF0; font-size:12px; }
+  .impl-table th { background:#F4F6F8; font-weight:700; color:#4A5568; }
+  .impl-table tr:last-child td { border-bottom:none; }
+</style>
+</head>
+<body>
+
+<!-- 커버 -->
+<div class="cover">
+  <div class="project-label">화면설계서 · Wireframe Specification</div>
+  <h1>멘토라이브러리 홈페이지</h1>
+  <div class="sub">화면설계서 인덱스 및 사이트맵 / v1.0</div>
+  <div class="cover-meta">
+    <div class="m"><div class="label">프로젝트명</div><div class="val">멘토라이브러리 홈페이지 리뉴얼</div></div>
+    <div class="m"><div class="label">플랫폼</div><div class="val">Web — 아임웹(Imweb)</div></div>
+    <div class="m"><div class="label">버전</div><div class="val">v1.0</div></div>
+    <div class="m"><div class="label">작성일</div><div class="val">2026-03-11</div></div>
+    <div class="m"><div class="label">총 화면 수</div><div class="val">8 screens</div></div>
+  </div>
+</div>
+
+<!-- 화면 목록 -->
+<div class="section">
+  <div class="section-title">📄 화면 목록 (Screen Index)</div>
+  <div class="screen-list">
+    <div class="screen-item" style="background:#E8ECF0;font-weight:700;font-size:11px;color:#718096;">
+      <div style="width:72px;">화면 ID</div>
+      <div style="flex:1;">화면명</div>
+      <div style="width:200px;">URL</div>
+      <div style="width:80px;">우선순위</div>
+      <div style="width:220px;">설계서 파일</div>
+    </div>
+    <div class="screen-item">
+      <div class="scr-id">SCR-001</div>
+      <div class="scr-name">메인 (Home)</div>
+      <div class="scr-url">/</div>
+      <div class="scr-priority p-high">높음</div>
+      <div class="scr-file">SCR-001_home.html</div>
+    </div>
+    <div class="screen-item">
+      <div class="scr-id">SCR-002</div>
+      <div class="scr-name">서비스 — 리더십과 전략</div>
+      <div class="scr-url">/service/leadership</div>
+      <div class="scr-priority p-high">높음</div>
+      <div class="scr-file">SCR-002-005_services.html</div>
+    </div>
+    <div class="screen-item">
+      <div class="scr-id">SCR-003</div>
+      <div class="scr-name">서비스 — 인재경영</div>
+      <div class="scr-url">/service/talent</div>
+      <div class="scr-priority p-high">높음</div>
+      <div class="scr-file">SCR-002-005_services.html</div>
+    </div>
+    <div class="screen-item">
+      <div class="scr-id">SCR-004</div>
+      <div class="scr-name">서비스 — Self as Enterprise</div>
+      <div class="scr-url">/service/self</div>
+      <div class="scr-priority p-high">높음</div>
+      <div class="scr-file">SCR-002-005_services.html</div>
+    </div>
+    <div class="screen-item">
+      <div class="scr-id">SCR-005</div>
+      <div class="scr-name">서비스 — 청년 멘토링</div>
+      <div class="scr-url">/service/youth</div>
+      <div class="scr-priority p-high">높음</div>
+      <div class="scr-file">SCR-002-005_services.html</div>
+    </div>
+    <div class="screen-item">
+      <div class="scr-id">SCR-006</div>
+      <div class="scr-name">멘토단</div>
+      <div class="scr-url">/mentors</div>
+      <div class="scr-priority p-high">높음</div>
+      <div class="scr-file">SCR-006-008_mentor-cases-contact.html</div>
+    </div>
+    <div class="screen-item">
+      <div class="scr-id">SCR-007</div>
+      <div class="scr-name">고객 사례</div>
+      <div class="scr-url">/cases</div>
+      <div class="scr-priority p-med">중간</div>
+      <div class="scr-file">SCR-006-008_mentor-cases-contact.html</div>
+    </div>
+    <div class="screen-item">
+      <div class="scr-id">SCR-008</div>
+      <div class="scr-name">문의 (Contact)</div>
+      <div class="scr-url">/contact</div>
+      <div class="scr-priority p-high">높음</div>
+      <div class="scr-file">SCR-006-008_mentor-cases-contact.html</div>
+    </div>
+  </div>
+</div>
+
+<!-- 흐름도 -->
+<div class="section" style="padding-top:0;">
+  <div class="section-title">🔄 화면 흐름도 (Navigation Flow)</div>
+  <div class="flow-area">
+<pre>
+[공통 GNB] ─────────────────────────────────────────────
+  로고 클릭          → SCR-001 메인
+  서비스 ▾           → 드롭다운 (SCR-002~005)
+  멘토단             → SCR-006
+  고객 사례          → SCR-007
+  문의               → SCR-008
+  무료 상담 신청      → SCR-008
+
+SCR-001 메인 (/)
+  ├─ "기업 서비스 알아보기"    → SCR-002 리더십과 전략 (첫 번째)
+  ├─ "무료 상담 신청"          → SCR-008 문의
+  ├─ 서비스 카드 "자세히 보기" → SCR-002 / SCR-003 / SCR-004 / SCR-005
+  ├─ 멘토 카드 클릭            → SCR-006 멘토단
+  └─ 하단 CTA 버튼             → SCR-008 문의
+
+SCR-002 ~ SCR-005 서비스 페이지 (/service/*)
+  ├─ 서비스 탭 클릭            → 해당 서비스 페이지 전환 (동일 URL 경로 내)
+  ├─ 관련 멘토 카드 클릭       → SCR-006 멘토단
+  └─ 서비스별 CTA 버튼         → SCR-008 문의
+
+SCR-006 멘토단 (/mentors)
+  ├─ 멘토 카드 클릭            → 멘토 상세 모달 (인라인 팝업)
+  ├─ "멘토 지원하기"           → 멘토 지원 폼 (별도 구현 또는 문의폼 활용)
+  └─ "기업 도입 문의"          → SCR-008 문의
+
+SCR-007 고객 사례 (/cases)
+  ├─ 사례 카드 클릭            → 사례 상세 (인라인 팝업 또는 /cases/{id})
+  └─ 하단 CTA 버튼             → SCR-008 문의
+
+SCR-008 문의 (/contact)
+  └─ 폼 제출 완료              → 완료 메시지 (인라인) + 자동 이메일 발송
+</pre>
+  </div>
+  <div class="flow-note">※ 아임웹 특성 상 드롭다운 메뉴, 탭 전환, 팝업은 아임웹 내장 기능으로 구현. 별도 커스텀 코딩 최소화</div>
+</div>
+
+<!-- 소재 체크리스트 -->
+<div class="section" style="padding-top:0;">
+  <div class="section-title">📋 소재 제공 체크리스트</div>
+  <div class="checklist">
+    <div class="cl-section">
+      <h4>🔴 높음 — 이 항목 없이는 해당 섹션 구현 불가</h4>
+      <div class="cl-item">
+        <div class="cl-box"></div>
+        <div class="cl-content"><div class="cl-title">멘토단 전체 목록</div><div class="cl-desc">사진, 이름, 현직/소속, 전문분야, 한 줄 소개, 공개 동의 → 멘토단 페이지(SCR-006) 및 서비스 페이지 관련 멘토 섹션</div></div>
+        <div class="cl-priority prio-high">높음</div>
+      </div>
+      <div class="cl-item">
+        <div class="cl-box"></div>
+        <div class="cl-content"><div class="cl-title">B2B 수행 사례 또는 기업 고객 후기</div><div class="cl-desc">기업명(익명 가능)+도입 서비스+성과 → 고객사례(SCR-007) 및 메인 후기 섹션</div></div>
+        <div class="cl-priority prio-high">높음</div>
+      </div>
+      <div class="cl-item">
+        <div class="cl-box"></div>
+        <div class="cl-content"><div class="cl-title">신뢰 지표 수치</div><div class="cl-desc">멘토단 인원 수, 수혜 기업·기관 수, 수행 프로그램 수 → 메인 신뢰 지표 섹션</div></div>
+        <div class="cl-priority prio-high">높음</div>
+      </div>
+      <div class="cl-item">
+        <div class="cl-box"></div>
+        <div class="cl-content"><div class="cl-title">각 서비스별 프로그램 상세 구성</div><div class="cl-desc">모듈명, 시간, 방식(워크샵/코칭/온오프라인) → 서비스 4개 페이지 (SCR-002~005)</div></div>
+        <div class="cl-priority prio-high">높음</div>
+      </div>
+    </div>
+    <div class="cl-section">
+      <h4>🟡 중간 — 없으면 임시 대체 가능하나 품질 저하</h4>
+      <div class="cl-item">
+        <div class="cl-box"></div>
+        <div class="cl-content"><div class="cl-title">전준수 대표 프로필 사진 및 상세 경력</div><div class="cl-desc">메인 대표 소개 섹션, 인재경영 서비스 페이지 → 없으면 텍스트만으로 구성</div></div>
+        <div class="cl-priority prio-med">중간</div>
+      </div>
+      <div class="cl-item">
+        <div class="cl-box"></div>
+        <div class="cl-content"><div class="cl-title">브랜드 컬러 팔레트 확정</div><div class="cl-desc">디자이너에게 전달할 방향성 결정 필요 → 미확정 시 기획서 제안(다크네이비+화이트+포인트 그린/골드) 사용</div></div>
+        <div class="cl-priority prio-med">중간</div>
+      </div>
+      <div class="cl-item">
+        <div class="cl-box"></div>
+        <div class="cl-content"><div class="cl-title">연락처 정보 확정</div><div class="cl-desc">대표 전화번호, 대표 이메일, 정확한 주소 → 문의 페이지(SCR-008)</div></div>
+        <div class="cl-priority prio-med">중간</div>
+      </div>
+    </div>
+    <div class="cl-section">
+      <h4>🟢 낮음 — 나중에 추가 가능</h4>
+      <div class="cl-item">
+        <div class="cl-box done"></div>
+        <div class="cl-content"><div class="cl-title">핵심 카피 (헤드라인, CTA 문구 등)</div><div class="cl-desc">기획서 AI생성 카피 그대로 활용 가능</div></div>
+        <div class="cl-priority prio-low">완료</div>
+      </div>
+      <div class="cl-item">
+        <div class="cl-box"></div>
+        <div class="cl-content"><div class="cl-title">청년 멘토링 참여 후기</div><div class="cl-desc">2~3개 → SCR-005 청년 멘토링 페이지</div></div>
+        <div class="cl-priority prio-low">낮음</div>
+      </div>
+      <div class="cl-item">
+        <div class="cl-box"></div>
+        <div class="cl-content"><div class="cl-title">사업자등록번호, 법적 고지 텍스트</div><div class="cl-desc">Footer, 개인정보처리방침</div></div>
+        <div class="cl-priority prio-low">낮음</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 아임웹 구현 가이드 -->
+<div class="section" style="padding-top:0;">
+  <div class="section-title">⚙️ 아임웹 구현 가이드</div>
+  <div class="impl-table">
+    <table>
+      <tr><th>기능</th><th>화면</th><th>아임웹 구현 방법</th><th>난이도</th></tr>
+      <tr><td>GNB 드롭다운 메뉴</td><td>전체</td><td>아임웹 헤더 > 메뉴 관리 > 드롭다운 설정</td><td>⭐</td></tr>
+      <tr><td>서비스 탭 전환</td><td>SCR-002~005</td><td>아임웹 '탭' 섹션 컴포넌트 활용</td><td>⭐⭐</td></tr>
+      <tr><td>멘토 카드 + 필터</td><td>SCR-006</td><td>아임웹 '갤러리 + 카테고리 필터' 섹션</td><td>⭐⭐</td></tr>
+      <tr><td>멘토 상세 모달</td><td>SCR-006</td><td>아임웹 '팝업 레이어' 기능. 카드마다 팝업 연결</td><td>⭐⭐⭐</td></tr>
+      <tr><td>고객사례 필터</td><td>SCR-007</td><td>아임웹 '갤러리 + 카테고리 필터' 섹션</td><td>⭐⭐</td></tr>
+      <tr><td>문의 폼</td><td>SCR-008</td><td>아임웹 '폼' 컴포넌트. 이메일 자동발송 설정 포함</td><td>⭐⭐</td></tr>
+      <tr><td>숫자 카운터 애니메이션</td><td>SCR-001</td><td>아임웹 '숫자 카운터' 섹션 또는 스크롤 효과</td><td>⭐⭐</td></tr>
+      <tr><td>후기 슬라이드</td><td>SCR-001</td><td>아임웹 '슬라이드' 또는 '후기' 섹션</td><td>⭐</td></tr>
+      <tr><td>고정 CTA 버튼</td><td>전체</td><td>아임웹 플로팅 버튼 (하단 고정 "상담 신청") — 선택사항</td><td>⭐</td></tr>
+    </table>
+  </div>
+  <div style="margin-top:16px; padding:16px; background:#EBF8FF; border:1px solid #BEE3F8; border-radius:8px;">
+    <div style="font-size:11px;font-weight:700;color:#2B6CB0;margin-bottom:8px;">💡 아임웹 작업 순서 권장</div>
+    <div style="font-size:12px;color:#2C5282;line-height:1.8;">
+      1. 도메인 연결 및 기본 설정<br>
+      2. 공통 GNB + Footer 세팅<br>
+      3. SCR-008 문의 페이지 (폼 설정 선행)<br>
+      4. SCR-001 메인 페이지<br>
+      5. SCR-002~005 서비스 페이지 (동일 구조 복제 활용)<br>
+      6. SCR-006 멘토단 (소재 확보 후 진행)<br>
+      7. SCR-007 고객 사례 (소재 확보 후 진행)
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
