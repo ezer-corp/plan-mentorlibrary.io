@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SCR-009 | 클래스 — 멘토라이브러리 화면설계서</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; background:#F4F6F8; color:#2D3748; font-size:13px; }
+  .doc-header { background:#2D3748; color:#fff; padding:16px 32px; display:flex; justify-content:space-between; align-items:center; }
+  .doc-header .project { font-size:11px; color:#A0AEC0; }
+  .doc-header .screen-title { font-size:16px; font-weight:700; }
+  .doc-header .meta { font-size:11px; color:#A0AEC0; text-align:right; }
+  .spec-area { background:#fff; margin:16px 32px; border-radius:8px; border:1px solid #CBD2DA; overflow:hidden; }
+  .spec-area .spec-title { background:#E8ECF0; padding:10px 16px; font-weight:700; font-size:12px; border-bottom:1px solid #CBD2DA; display:flex; align-items:center; gap:8px; }
+  .spec-area .spec-title .badge { background:#4A5568; color:#fff; font-size:10px; padding:2px 8px; border-radius:10px; }
+  table { width:100%; border-collapse:collapse; }
+  table td, table th { padding:8px 16px; border-bottom:1px solid #E8ECF0; font-size:12px; }
+  table th { background:#F4F6F8; font-weight:600; color:#4A5568; width:160px; white-space:nowrap; }
+  table tr:last-child td, table tr:last-child th { border-bottom:none; }
+  .req { color:#E53E3E; font-weight:700; }
+  .opt { color:#A0AEC0; }
+  .wf-area { margin:0 32px 16px; }
+  .wf-label { font-size:11px; font-weight:700; color:#718096; text-transform:uppercase; letter-spacing:1px; padding:12px 0 8px; }
+  .wf-frame { background:#fff; border:2px solid #CBD2DA; border-radius:8px; overflow:hidden; max-width:1200px; }
+  .annotations { background:#FFFBEB; border:1px solid #F6E05E; border-radius:8px; padding:16px 20px; margin:12px 32px; }
+  .annotations h4 { font-size:11px; font-weight:700; color:#744210; margin-bottom:8px; }
+  .annotations ul { list-style:none; }
+  .annotations li { font-size:12px; color:#744210; padding:3px 0; padding-left:16px; position:relative; }
+  .annotations li::before { content:"▸"; position:absolute; left:0; }
+  .divider { border:none; border-top:1px solid #E8ECF0; margin:0 32px; }
+
+  /* ── GNB ── */
+  .gnb { background:#fff; border-bottom:1px solid #E8ECF0; padding:0 40px; height:64px; display:flex; align-items:center; justify-content:space-between; }
+  .gnb .logo { font-size:16px; font-weight:800; color:#2D3748; }
+  .gnb .nav { display:flex; gap:28px; }
+  .gnb .nav a { font-size:13px; color:#4A5568; text-decoration:none; }
+  .gnb .nav a.active { color:#2D3748; font-weight:700; border-bottom:2px solid #2D3748; padding-bottom:2px; }
+  .gnb .gnb-cta { background:#4A5568; color:#fff; padding:8px 20px; border-radius:4px; font-size:12px; font-weight:600; text-decoration:none; }
+  .nav-dropdown { position:relative; display:inline-block; }
+  .nav-dropdown-menu { display:none; position:absolute; top:calc(100% + 8px); left:0; background:#fff; border:1px solid #CBD2DA; border-radius:6px; box-shadow:0 8px 24px rgba(0,0,0,0.12); min-width:180px; z-index:999; padding:6px 0; }
+  .nav-dropdown-menu a { display:block !important; padding:9px 18px !important; font-size:12px !important; color:#4A5568 !important; text-decoration:none !important; white-space:nowrap; }
+  .nav-dropdown:hover .nav-dropdown-menu { display:block; }
+  .breadcrumb { background:#F4F6F8; padding:12px 40px; font-size:11px; color:#718096; border-bottom:1px solid #E8ECF0; }
+  .breadcrumb span { color:#4A5568; font-weight:600; }
+  .breadcrumb a { color:#718096; text-decoration:none; }
+
+  /* ── 페이지 헤더 ── */
+  .page-header { background:#E8ECF0; padding:56px 40px; text-align:center; }
+  .page-header .ph-tag { display:inline-block; border:1px solid #CBD2DA; color:#4A5568; font-size:11px; padding:4px 14px; border-radius:20px; margin-bottom:16px; font-weight:600; }
+  .page-header h1 { font-size:28px; font-weight:800; color:#2D3748; margin-bottom:10px; }
+  .page-header p { font-size:14px; color:#718096; line-height:1.7; max-width:500px; margin:0 auto; }
+
+  /* ── 카테고리 필터 ── */
+  .section { padding:48px 40px; }
+  .section-alt { background:#F4F6F8; }
+  .section-label { font-size:11px; font-weight:700; color:#718096; letter-spacing:2px; text-transform:uppercase; margin-bottom:8px; }
+  .section-title { font-size:20px; font-weight:800; color:#2D3748; margin-bottom:8px; }
+  .section-sub { font-size:13px; color:#718096; line-height:1.7; margin-bottom:32px; }
+
+  .filter-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:28px; }
+  .filter-tabs { display:flex; gap:8px; }
+  .filter-tab { padding:8px 20px; border:1.5px solid #CBD2DA; border-radius:20px; font-size:12px; color:#4A5568; }
+  .filter-tab.active { background:#4A5568; color:#fff; border-color:#4A5568; font-weight:600; }
+  .sort-select { border:1.5px solid #CBD2DA; border-radius:6px; padding:7px 14px; font-size:12px; color:#4A5568; background:#fff; }
+
+  /* ── 클래스 카드 그리드 ── */
+  .class-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+  .class-card { background:#fff; border:1px solid #CBD2DA; border-radius:10px; overflow:hidden; }
+  .class-card-thumb { height:160px; background:#C8D0D8; position:relative; display:flex; align-items:center; justify-content:center; }
+  .class-card-thumb .badge-sale { position:absolute; top:12px; left:12px; background:#E53E3E; color:#fff; font-size:10px; font-weight:700; padding:2px 8px; border-radius:4px; }
+  .class-card-thumb .badge-time { position:absolute; top:12px; right:12px; background:#2D3748; color:#fff; font-size:10px; padding:2px 8px; border-radius:4px; }
+  .class-card-body { padding:18px 20px; }
+  .class-category { font-size:10px; font-weight:700; color:#718096; letter-spacing:1px; text-transform:uppercase; margin-bottom:6px; }
+  .class-title { font-size:14px; font-weight:700; color:#2D3748; line-height:1.5; margin-bottom:8px; }
+  .class-desc { font-size:11px; color:#718096; line-height:1.6; margin-bottom:14px; }
+  .class-card-footer { display:flex; justify-content:space-between; align-items:center; padding-top:12px; border-top:1px solid #E8ECF0; }
+  .class-price { font-size:16px; font-weight:800; color:#2D3748; }
+  .class-price .orig { font-size:11px; color:#A0AEC0; text-decoration:line-through; margin-right:4px; font-weight:400; }
+  .class-btn { background:#4A5568; color:#fff; font-size:11px; font-weight:600; padding:6px 14px; border-radius:4px; }
+  .class-meta { display:flex; gap:8px; margin-bottom:8px; flex-wrap:wrap; }
+  .class-meta-tag { font-size:10px; background:#E8ECF0; color:#4A5568; padding:2px 8px; border-radius:10px; }
+
+  /* ── Upcoming 섹션 ── */
+  .upcoming-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:20px; }
+  .upcoming-card { background:#fff; border:1px solid #CBD2DA; border-radius:10px; overflow:hidden; }
+  .upcoming-thumb { height:120px; background:#C8D0D8; display:flex; align-items:center; justify-content:center; }
+  .upcoming-body { padding:16px 20px; }
+  .upcoming-category { font-size:11px; font-weight:700; color:#4A5568; margin-bottom:8px; }
+  .upcoming-list { list-style:none; }
+  .upcoming-list li { font-size:12px; color:#4A5568; padding:6px 0; border-bottom:1px solid #F4F6F8; display:flex; justify-content:space-between; align-items:center; }
+  .upcoming-list li:last-child { border-bottom:none; }
+  .upcoming-list li .status-open { font-size:10px; color:#276749; background:#F0FFF4; padding:1px 8px; border-radius:10px; font-weight:600; }
+  .upcoming-list li .status-soon { font-size:10px; color:#744210; background:#FFFBEB; padding:1px 8px; border-radius:10px; font-weight:600; }
+
+  /* ── 알림 등록 ── */
+  .notify-section { background:#2D3748; padding:48px 40px; text-align:center; }
+  .notify-section h3 { font-size:22px; font-weight:800; color:#fff; margin-bottom:8px; }
+  .notify-section p { font-size:13px; color:#A0AEC0; margin-bottom:28px; line-height:1.7; }
+  .notify-form { display:flex; gap:0; max-width:480px; margin:0 auto 12px; }
+  .notify-form input { flex:1; border:none; padding:12px 16px; font-size:13px; border-radius:4px 0 0 4px; color:#2D3748; background:#fff; }
+  .notify-form button { background:#718096; color:#fff; padding:12px 24px; font-size:13px; font-weight:700; border:none; border-radius:0 4px 4px 0; white-space:nowrap; }
+  .notify-policy { font-size:11px; color:#718096; }
+
+  /* ── FOOTER ── */
+  .footer { background:#2D3748; border-top:1px solid #4A5568; padding:40px; }
+  .footer-inner { display:flex; justify-content:space-between; }
+  .footer-brand .logo { font-size:14px; font-weight:800; color:#fff; margin-bottom:8px; }
+  .footer-brand p { font-size:11px; color:#718096; line-height:1.8; }
+  .footer-links { display:flex; gap:40px; }
+  .footer-links .col h5 { font-size:11px; font-weight:700; color:#A0AEC0; margin-bottom:12px; text-transform:uppercase; }
+  .footer-links .col a { display:block; font-size:12px; color:#718096; margin-bottom:6px; text-decoration:none; }
+  .footer-bottom { border-top:1px solid #4A5568; margin-top:24px; padding-top:16px; font-size:11px; color:#718096; text-align:center; }
+</style>
+</head>
+<body>
+
+<div class="doc-header">
+  <div>
+    <div class="project">멘토라이브러리 홈페이지 화면설계서 v1.0</div>
+    <div class="screen-title">SCR-009 · 클래스</div>
+  </div>
+  <div class="meta">플랫폼: Web (아임웹)<br>작성일: 2026-03-11 | v1.0</div>
+</div>
+
+<div class="spec-area">
+  <div class="spec-title"><span class="badge">화면 명세</span> SCR-009 클래스</div>
+  <table>
+    <tr><th>화면 ID</th><td>SCR-009</td><th>URL</th><td>/class</td></tr>
+    <tr><th>목적</th><td colspan="3">멘토들의 강의 리스트 제공, 온라인 신청 및 결제 유도. 진행 중인 클래스 + 예정 클래스 + 알림 등록</td></tr>
+    <tr><th>주요 CTA</th><td colspan="3">각 클래스 "신청하기" → 상세/결제 페이지 (별도 설계) / 신규 알림 등록 이메일 폼</td></tr>
+    <tr><th>참고 URL</th><td colspan="3">https://mentorlibrary.co.kr/class</td></tr>
+  </table>
+</div>
+
+<div class="spec-area">
+  <div class="spec-title"><span class="badge">컴포넌트 명세</span></div>
+  <table>
+    <tr><th>컴포넌트</th><th>타입</th><th>필수</th><th>설명 / 아임웹 구현</th></tr>
+    <tr><td>페이지 헤더</td><td>Hero Banner</td><td class="req">✅</td><td>"리더와 전문가를 위한 성장 여정" 헤드라인</td></tr>
+    <tr><td>카테고리 필터 탭</td><td>Tab Filter</td><td class="req">✅</td><td>전체 / 인재경영 / 리더십과 전략 / Self as Enterprise — 아임웹 카테고리 필터</td></tr>
+    <tr><td>정렬 셀렉트박스</td><td>Select</td><td class="opt">-</td><td>등록순 / 인기순 / 낮은가격순 / 높은가격순 / 상품평 많은순</td></tr>
+    <tr><td>클래스 카드 목록</td><td>Card Grid (3열)</td><td class="req">✅</td><td>썸네일+카테고리+제목+설명+가격+신청버튼. 아임웹 쇼핑몰 상품 목록</td></tr>
+    <tr><td>SALE / TIME SALE 배지</td><td>Badge</td><td class="opt">-</td><td>할인 중인 클래스에 표시</td></tr>
+    <tr><td>Upcoming Class 섹션</td><td>Card Grid (3열)</td><td class="req">✅</td><td>예정 클래스 3개 카테고리 × 오픈 예정 항목 리스트</td></tr>
+    <tr><td>신규 알림 등록 폼</td><td>Email Form</td><td class="req">✅</td><td>이메일 입력 + 등록 버튼. 아임웹 뉴스레터/알림 기능</td></tr>
+  </table>
+</div>
+
+<div class="spec-area">
+  <div class="spec-title"><span class="badge">연결 화면</span></div>
+  <table>
+    <tr><th>액션</th><th>이동 화면</th><th>비고</th></tr>
+    <tr><td>클래스 카드 클릭 / "신청하기"</td><td>클래스 상세 페이지 (/class/?idx=N)</td><td>별도 설계 범위 제외</td></tr>
+    <tr><td>알림 이메일 등록</td><td>완료 메시지 (인라인)</td><td>아임웹 폼 기능</td></tr>
+  </table>
+</div>
+
+<div class="annotations">
+  <h4>⚠ 아임웹 구현 주의사항</h4>
+  <ul>
+    <li>클래스 목록은 아임웹 쇼핑몰 기능으로 구현. 카테고리 분류 및 정렬 옵션 아임웹 상품 관리에서 설정</li>
+    <li>TIME SALE 배지: 아임웹 할인 기간 설정 기능 활용</li>
+    <li>Upcoming Class 섹션: 아임웹 텍스트/이미지 섹션으로 수동 구성 (별도 DB 불필요)</li>
+    <li>신규 알림 등록: 아임웹 뉴스레터 구독 폼 기능 활용. 수집 동의 문구 필수 포함</li>
+    <li>각 클래스 썸네일 이미지 소재 제공 필요</li>
+  </ul>
+</div>
+
+<hr class="divider">
+
+<div class="wf-area">
+  <div class="wf-label">📐 와이어프레임 — SCR-009 클래스</div>
+  <div class="wf-frame">
+
+    <!-- GNB -->
+    <div class="gnb">
+      <div class="logo"><a href="SCR-001_home.html" style="text-decoration:none;color:inherit;">MENTOR LIBRARY</a></div>
+      <div class="nav">
+        <div class="nav-dropdown">
+          <a href="SCR-002-005_services.html#scr002">서비스 ▾</a>
+          <div class="nav-dropdown-menu">
+            <a href="SCR-002-005_services.html#scr002">리더십과 전략</a>
+            <a href="SCR-002-005_services.html#scr003">인재경영</a>
+            <a href="SCR-002-005_services.html#scr004">Self as Enterprise</a>
+            <a href="SCR-002-005_services.html#scr005">청년 멘토링</a>
+          </div>
+        </div>
+        <a href="SCR-006-008_mentor-cases-contact.html#scr006">멘토단</a>
+        <a href="SCR-009_class.html" class="active">클래스</a>
+        <a href="SCR-010_library.html">라이브러리</a>
+        <a href="SCR-006-008_mentor-cases-contact.html#scr007">고객 사례</a>
+      </div>
+      <a href="SCR-006-008_mentor-cases-contact.html#scr008" class="gnb-cta">무료 상담 신청</a>
+    </div>
+    <div class="breadcrumb"><a href="SCR-001_home.html">홈</a> > <span>클래스</span></div>
+
+    <!-- 페이지 헤더 -->
+    <div class="page-header">
+      <div class="ph-tag">Mentor Library Class</div>
+      <h1>리더와 전문가를 위한 성장 여정</h1>
+      <p>국내 최고 멘토와 함께하는 실전 클래스.<br>당신의 성장을 이끄는 모든 과정이 여기 있습니다.</p>
+    </div>
+
+    <!-- ① 진행 중인 클래스 -->
+    <div class="section">
+      <div class="section-label">Current Classes</div>
+      <div class="section-title">진행 중인 클래스</div>
+      <div class="section-sub">지금 수강 신청 가능한 클래스입니다</div>
+
+      <div class="filter-row">
+        <div class="filter-tabs">
+          <div class="filter-tab active">전체</div>
+          <div class="filter-tab">인재경영</div>
+          <div class="filter-tab">리더십과 전략</div>
+          <div class="filter-tab">Self as Enterprise</div>
+        </div>
+        <div class="sort-select">등록순 ▾</div>
+      </div>
+
+      <div class="class-grid">
+
+        <!-- 카드 1 -->
+        <div class="class-card">
+          <div class="class-card-thumb">
+            <span class="badge-sale">SALE</span>
+            <span class="badge-time">TIME SALE · D-13</span>
+            <svg width="48" height="36" viewBox="0 0 48 36" fill="none"><rect x="4" y="4" width="40" height="28" rx="3" stroke="#A0AEC0" stroke-width="2" fill="none"/><path d="M12 24l8-10 6 7 4-5 6 8" stroke="#A0AEC0" stroke-width="2" fill="none"/></svg>
+          </div>
+          <div class="class-card-body">
+            <div class="class-category">인재경영</div>
+            <div class="class-title">주니어를 위한 조직문화 실전 — Culture LAB</div>
+            <div class="class-meta">
+              <span class="class-meta-tag">워크샵 8시간</span>
+              <span class="class-meta-tag">온라인</span>
+            </div>
+            <div class="class-desc">조직문화를 "이해"하는 것을 넘어 문제를 발견하고, 보고하고, 직접 설계해보는 실전 클래스</div>
+            <div class="class-card-footer">
+              <div class="class-price"><span class="orig">450,000원</span>360,000원</div>
+              <div class="class-btn">신청하기</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 카드 2 -->
+        <div class="class-card">
+          <div class="class-card-thumb">
+            <svg width="48" height="36" viewBox="0 0 48 36" fill="none"><rect x="4" y="4" width="40" height="28" rx="3" stroke="#A0AEC0" stroke-width="2" fill="none"/><path d="M12 24l8-10 6 7 4-5 6 8" stroke="#A0AEC0" stroke-width="2" fill="none"/></svg>
+          </div>
+          <div class="class-card-body">
+            <div class="class-category">인재경영</div>
+            <div class="class-title">바이브코딩 × 성과관리 (주간반)</div>
+            <div class="class-meta">
+              <span class="class-meta-tag">Workshop</span>
+              <span class="class-meta-tag">인사이트&amp;네트워킹형</span>
+            </div>
+            <div class="class-desc">우리 회사의 성과관리 설계부터 실행확인까지 바이브코딩으로 직접 완성하는 과정</div>
+            <div class="class-card-footer">
+              <div class="class-price">490,000원</div>
+              <div class="class-btn">신청하기</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 카드 3 -->
+        <div class="class-card">
+          <div class="class-card-thumb">
+            <span class="badge-sale">SALE</span>
+            <span class="badge-time">TIME SALE · D-4</span>
+            <svg width="48" height="36" viewBox="0 0 48 36" fill="none"><rect x="4" y="4" width="40" height="28" rx="3" stroke="#A0AEC0" stroke-width="2" fill="none"/><path d="M12 24l8-10 6 7 4-5 6 8" stroke="#A0AEC0" stroke-width="2" fill="none"/></svg>
+          </div>
+          <div class="class-card-body">
+            <div class="class-category">리더십과 전략</div>
+            <div class="class-title">AI 에이전트를 고용하라 — 전략을 결과로 바꾸는 리더십</div>
+            <div class="class-meta">
+              <span class="class-meta-tag">하이브리드</span>
+              <span class="class-meta-tag">임원·팀장</span>
+            </div>
+            <div class="class-desc">지능 인플레이션 시대, 하이브리드 팀을 지휘하는 오케스트레이션 리더십 클래스</div>
+            <div class="class-card-footer">
+              <div class="class-price"><span class="orig">900,000원</span>765,000원</div>
+              <div class="class-btn">신청하기</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 카드 4 -->
+        <div class="class-card">
+          <div class="class-card-thumb">
+            <svg width="48" height="36" viewBox="0 0 48 36" fill="none"><rect x="4" y="4" width="40" height="28" rx="3" stroke="#A0AEC0" stroke-width="2" fill="none"/><path d="M12 24l8-10 6 7 4-5 6 8" stroke="#A0AEC0" stroke-width="2" fill="none"/></svg>
+          </div>
+          <div class="class-card-body">
+            <div class="class-category">Self as Enterprise</div>
+            <div class="class-title">지식근로자를 위한 개인 경영 시스템 설계 워크숍 (5C)</div>
+            <div class="class-meta">
+              <span class="class-meta-tag">워크숍</span>
+              <span class="class-meta-tag">직장인·경력자</span>
+            </div>
+            <div class="class-desc">'나라는 기업(Self as an Enterprise)'을 설계하고 운영하는 법을 배우는 실전 과정</div>
+            <div class="class-card-footer">
+              <div class="class-price">490,000원</div>
+              <div class="class-btn">신청하기</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 카드 5 -->
+        <div class="class-card">
+          <div class="class-card-thumb">
+            <svg width="48" height="36" viewBox="0 0 48 36" fill="none"><rect x="4" y="4" width="40" height="28" rx="3" stroke="#A0AEC0" stroke-width="2" fill="none"/><path d="M12 24l8-10 6 7 4-5 6 8" stroke="#A0AEC0" stroke-width="2" fill="none"/></svg>
+          </div>
+          <div class="class-card-body">
+            <div class="class-category">리더십과 전략</div>
+            <div class="class-title">성장과 성공을 돕는 리더십 스킬 복제</div>
+            <div class="class-meta">
+              <span class="class-meta-tag">전일 과정</span>
+              <span class="class-meta-tag">팀장·중간관리자</span>
+            </div>
+            <div class="class-desc">변화하는 시대의 리더십과 조직문화 흐름을 이해하고 1on1 대화와 피드백으로 팀원 성장을 지원하는 실전 스킬</div>
+            <div class="class-card-footer">
+              <div class="class-price">1,200,000원</div>
+              <div class="class-btn">신청하기</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 카드 6 -->
+        <div class="class-card">
+          <div class="class-card-thumb">
+            <svg width="48" height="36" viewBox="0 0 48 36" fill="none"><rect x="4" y="4" width="40" height="28" rx="3" stroke="#A0AEC0" stroke-width="2" fill="none"/><path d="M12 24l8-10 6 7 4-5 6 8" stroke="#A0AEC0" stroke-width="2" fill="none"/></svg>
+          </div>
+          <div class="class-card-body">
+            <div class="class-category">인재경영</div>
+            <div class="class-title">CEO의 인재경영 스쿨</div>
+            <div class="class-meta">
+              <span class="class-meta-tag">7인 전문가</span>
+              <span class="class-meta-tag">CEO·창업자</span>
+            </div>
+            <div class="class-desc">채용부터 조직문화까지, 각 분야 최고 전문가 7인과 함께 인재로 승리하는 전략과 현장 실행법을 배우는 자리</div>
+            <div class="class-card-footer">
+              <div class="class-price">1,200,000원</div>
+              <div class="class-btn">신청하기</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ② Upcoming Class -->
+    <div class="section section-alt">
+      <div class="section-label">Upcoming Classes</div>
+      <div class="section-title">앞으로 예정된 클래스</div>
+      <div class="section-sub">멘토라이브러리의 핵심 프로그램들이 새롭게 개설됩니다. 각 분야 멘토들과 함께 성장의 방향을 설계하세요.</div>
+
+      <div class="upcoming-grid">
+
+        <div class="upcoming-card">
+          <div class="upcoming-thumb">
+            <svg width="40" height="30" viewBox="0 0 40 30" fill="none"><path d="M5 25L15 10L22 18L28 12L35 25" stroke="#A0AEC0" stroke-width="2" fill="none"/></svg>
+          </div>
+          <div class="upcoming-body">
+            <div class="upcoming-category">🎯 리더십과 전략</div>
+            <ul class="upcoming-list">
+              <li>
+                <span>AI시대 리더의 문제해결 리더십</span>
+                <span class="status-open">Open</span>
+              </li>
+              <li>
+                <span>CEO와 리더를 위한 People Skill</span>
+                <span class="status-soon">Coming Soon</span>
+              </li>
+              <li>
+                <span>창업자 정신</span>
+                <span class="status-soon">Coming Soon</span>
+              </li>
+              <li>
+                <span>Why를 소통하는 도구, OKR</span>
+                <span class="status-soon">Coming Soon</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="upcoming-card">
+          <div class="upcoming-thumb">
+            <svg width="40" height="30" viewBox="0 0 40 30" fill="none"><circle cx="15" cy="12" r="6" stroke="#A0AEC0" stroke-width="2" fill="none"/><path d="M5 27c0-5.5 4.5-10 10-10s10 4.5 10 10" stroke="#A0AEC0" stroke-width="2" fill="none"/><path d="M27 10c2 0 5 1 5 7" stroke="#A0AEC0" stroke-width="2" fill="none" stroke-dasharray="2 2"/></svg>
+          </div>
+          <div class="upcoming-body">
+            <div class="upcoming-category">👥 인재경영</div>
+            <ul class="upcoming-list">
+              <li>
+                <span>주니어를 위한 조직문화 실전</span>
+                <span class="status-open">Open</span>
+              </li>
+              <li>
+                <span>CEO의 인재경영 스쿨</span>
+                <span class="status-open">Open</span>
+              </li>
+              <li>
+                <span>채용 마스터 클래스</span>
+                <span class="status-soon">Coming Soon</span>
+              </li>
+              <li>
+                <span>조직문화의 본질과 실전 설계</span>
+                <span class="status-soon">Coming Soon</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="upcoming-card">
+          <div class="upcoming-thumb">
+            <svg width="40" height="30" viewBox="0 0 40 30" fill="none"><rect x="8" y="6" width="24" height="18" rx="2" stroke="#A0AEC0" stroke-width="2" fill="none"/><path d="M14 14h12M14 18h8" stroke="#A0AEC0" stroke-width="2" fill="none"/></svg>
+          </div>
+          <div class="upcoming-body">
+            <div class="upcoming-category">💼 Self as Enterprise</div>
+            <ul class="upcoming-list">
+              <li>
+                <span>개인 경영 시스템 설계 워크숍 (5C)</span>
+                <span class="status-open">Open</span>
+              </li>
+              <li>
+                <span>나의 강점 발견 — 커리어 재설계</span>
+                <span class="status-soon">Coming Soon</span>
+              </li>
+              <li>
+                <span>퇴직 준비자를 위한 전환 전략</span>
+                <span class="status-soon">Coming Soon</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ③ 신규 클래스 알림 등록 -->
+    <div class="notify-section">
+      <div style="font-size:11px;font-weight:700;color:#718096;letter-spacing:2px;text-transform:uppercase;margin-bottom:12px;">New Class Alert</div>
+      <h3>새로운 클래스가 오픈되면 가장 먼저 알려드릴게요</h3>
+      <p>이메일을 등록하시면 신규 클래스 오픈, 얼리버드 혜택,<br>멘토라이브러리의 새소식을 가장 먼저 받아보실 수 있습니다.</p>
+      <div class="notify-form">
+        <input type="email" placeholder="이메일 주소를 입력해주세요" disabled>
+        <button>알림 등록</button>
+      </div>
+      <div class="notify-policy">
+        이메일 등록 시 멘토라이브러리 새소식 전달 목적으로 이메일 주소를 수집하며,<br>
+        이용·보유에 동의하는 것으로 간주됩니다.
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <div class="logo"><a href="SCR-001_home.html" style="text-decoration:none;color:inherit;">MENTOR LIBRARY</a></div>
+          <p>서울 강남구 케이씨빌딩<br>contact@mentorlibrary.co.kr<br>사업자등록번호: 225-87-03252</p>
+        </div>
+        <div class="footer-links">
+          <div class="col">
+            <h5>서비스</h5>
+            <a href="SCR-002-005_services.html#scr002">리더십과 전략</a>
+            <a href="SCR-002-005_services.html#scr003">인재경영</a>
+            <a href="SCR-002-005_services.html#scr004">Self as Enterprise</a>
+            <a href="SCR-002-005_services.html#scr005">청년 멘토링</a>
+          </div>
+          <div class="col">
+            <h5>콘텐츠</h5>
+            <a href="SCR-009_class.html">클래스</a>
+            <a href="SCR-010_library.html">라이브러리</a>
+            <a href="SCR-006-008_mentor-cases-contact.html#scr006">멘토단</a>
+            <a href="SCR-006-008_mentor-cases-contact.html#scr007">고객 사례</a>
+          </div>
+          <div class="col">
+            <h5>법적 고지</h5>
+            <a href="#">개인정보처리방침</a>
+            <a href="#">이용약관</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">© 2026 멘토라이브러리. All rights reserved. &nbsp;|&nbsp; <a href="INDEX_sitemap-flow.html" style="color:#A0AEC0;text-decoration:none;">📋 화면설계서 인덱스</a></div>
+    </div>
+
+  </div><!-- /wf-frame -->
+</div><!-- /wf-area -->
+
+</body>
+</html>

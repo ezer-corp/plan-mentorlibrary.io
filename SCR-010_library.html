@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SCR-010 | 라이브러리 — 멘토라이브러리 화면설계서</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif; background:#F4F6F8; color:#2D3748; font-size:13px; }
+  .doc-header { background:#2D3748; color:#fff; padding:16px 32px; display:flex; justify-content:space-between; align-items:center; }
+  .doc-header .project { font-size:11px; color:#A0AEC0; }
+  .doc-header .screen-title { font-size:16px; font-weight:700; }
+  .doc-header .meta { font-size:11px; color:#A0AEC0; text-align:right; }
+  .spec-area { background:#fff; margin:16px 32px; border-radius:8px; border:1px solid #CBD2DA; overflow:hidden; }
+  .spec-area .spec-title { background:#E8ECF0; padding:10px 16px; font-weight:700; font-size:12px; border-bottom:1px solid #CBD2DA; display:flex; align-items:center; gap:8px; }
+  .spec-area .spec-title .badge { background:#4A5568; color:#fff; font-size:10px; padding:2px 8px; border-radius:10px; }
+  table { width:100%; border-collapse:collapse; }
+  table td, table th { padding:8px 16px; border-bottom:1px solid #E8ECF0; font-size:12px; }
+  table th { background:#F4F6F8; font-weight:600; color:#4A5568; width:160px; white-space:nowrap; }
+  table tr:last-child td, table tr:last-child th { border-bottom:none; }
+  .req { color:#E53E3E; font-weight:700; }
+  .opt { color:#A0AEC0; }
+  .wf-area { margin:0 32px 16px; }
+  .wf-label { font-size:11px; font-weight:700; color:#718096; text-transform:uppercase; letter-spacing:1px; padding:12px 0 8px; }
+  .wf-frame { background:#fff; border:2px solid #CBD2DA; border-radius:8px; overflow:hidden; max-width:1200px; }
+  .annotations { background:#FFFBEB; border:1px solid #F6E05E; border-radius:8px; padding:16px 20px; margin:12px 32px; }
+  .annotations h4 { font-size:11px; font-weight:700; color:#744210; margin-bottom:8px; }
+  .annotations ul { list-style:none; }
+  .annotations li { font-size:12px; color:#744210; padding:3px 0; padding-left:16px; position:relative; }
+  .annotations li::before { content:"▸"; position:absolute; left:0; }
+  .divider { border:none; border-top:1px solid #E8ECF0; margin:0 32px; }
+
+  /* GNB */
+  .gnb { background:#fff; border-bottom:1px solid #E8ECF0; padding:0 40px; height:64px; display:flex; align-items:center; justify-content:space-between; }
+  .gnb .logo { font-size:16px; font-weight:800; color:#2D3748; }
+  .gnb .nav { display:flex; gap:28px; }
+  .gnb .nav a { font-size:13px; color:#4A5568; text-decoration:none; }
+  .gnb .nav a.active { color:#2D3748; font-weight:700; border-bottom:2px solid #2D3748; padding-bottom:2px; }
+  .gnb .gnb-cta { background:#4A5568; color:#fff; padding:8px 20px; border-radius:4px; font-size:12px; font-weight:600; text-decoration:none; }
+  .nav-dropdown { position:relative; display:inline-block; }
+  .nav-dropdown-menu { display:none; position:absolute; top:calc(100% + 8px); left:0; background:#fff; border:1px solid #CBD2DA; border-radius:6px; box-shadow:0 8px 24px rgba(0,0,0,0.12); min-width:180px; z-index:999; padding:6px 0; }
+  .nav-dropdown-menu a { display:block !important; padding:9px 18px !important; font-size:12px !important; color:#4A5568 !important; text-decoration:none !important; white-space:nowrap; }
+  .nav-dropdown:hover .nav-dropdown-menu { display:block; }
+  .breadcrumb { background:#F4F6F8; padding:12px 40px; font-size:11px; color:#718096; border-bottom:1px solid #E8ECF0; }
+  .breadcrumb span { color:#4A5568; font-weight:600; }
+  .breadcrumb a { color:#718096; text-decoration:none; }
+
+  /* 페이지 헤더 — 다크 배경 */
+  .page-header { background:#2D3748; padding:64px 40px; text-align:center; position:relative; overflow:hidden; }
+  .page-header::before { content:""; position:absolute; inset:0; background:linear-gradient(135deg, #1A202C 0%, #2D3748 60%, #4A5568 100%); }
+  .page-header > * { position:relative; z-index:1; }
+  .page-header .ph-tag { display:inline-block; border:1px solid #718096; color:#A0AEC0; font-size:11px; padding:4px 14px; border-radius:20px; margin-bottom:16px; font-weight:600; }
+  .page-header h1 { font-size:30px; font-weight:800; color:#fff; margin-bottom:12px; }
+  .page-header p { font-size:14px; color:#A0AEC0; line-height:1.8; max-width:560px; margin:0 auto; }
+
+  /* 섹션 공통 */
+  .section { padding:56px 40px; }
+  .section-alt { background:#F4F6F8; }
+  .section-label { font-size:11px; font-weight:700; color:#718096; letter-spacing:2px; text-transform:uppercase; margin-bottom:8px; }
+  .section-title { font-size:22px; font-weight:800; color:#2D3748; margin-bottom:10px; }
+  .section-sub { font-size:13px; color:#718096; line-height:1.7; margin-bottom:36px; max-width:620px; }
+
+  /* 철학 — 3카드 */
+  .philosophy-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  .philosophy-card { background:#fff; border:1px solid #CBD2DA; border-radius:10px; padding:28px 24px; }
+  .ph-icon { width:48px; height:48px; background:#E8ECF0; border-radius:8px; display:flex; align-items:center; justify-content:center; margin-bottom:16px; }
+  .ph-keyword { font-size:11px; font-weight:700; color:#718096; letter-spacing:1px; text-transform:uppercase; margin-bottom:6px; }
+  .ph-title { font-size:15px; font-weight:800; color:#2D3748; margin-bottom:8px; line-height:1.4; }
+  .ph-desc { font-size:12px; color:#718096; line-height:1.7; }
+
+  /* 10-10 Club */
+  .club-section { background:#2D3748; padding:56px 40px; }
+  .club-inner { display:flex; gap:48px; align-items:center; }
+  .club-img { width:300px; height:220px; background:#4A5568; border-radius:10px; flex-shrink:0; display:flex; align-items:center; justify-content:center; }
+  .club-content { flex:1; }
+  .club-tag { font-size:11px; font-weight:700; color:#A0AEC0; letter-spacing:2px; text-transform:uppercase; margin-bottom:12px; }
+  .club-title { font-size:24px; font-weight:800; color:#fff; margin-bottom:8px; line-height:1.4; }
+  .club-sub { font-size:13px; color:#A0AEC0; line-height:1.8; margin-bottom:24px; }
+  .club-stat-row { display:flex; gap:32px; margin-bottom:24px; }
+  .club-stat { text-align:center; }
+  .club-stat .num { font-size:28px; font-weight:800; color:#fff; }
+  .club-stat .unit { font-size:11px; color:#A0AEC0; margin-top:2px; }
+  .club-desc { font-size:13px; color:#A0AEC0; line-height:1.8; border-left:3px solid #718096; padding-left:16px; }
+
+  /* 영상 콘텐츠 */
+  .video-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:20px; margin-bottom:32px; }
+  .video-featured { grid-column:1/3; }
+  .video-card { background:#E8ECF0; border-radius:10px; overflow:hidden; border:1px solid #CBD2DA; }
+  .video-thumb { height:200px; background:#C8D0D8; display:flex; align-items:center; justify-content:center; position:relative; }
+  .video-thumb.featured { height:280px; }
+  .play-btn { width:52px; height:52px; background:rgba(255,255,255,0.9); border-radius:50%; display:flex; align-items:center; justify-content:center; }
+  .video-body { padding:16px 20px; }
+  .video-category { font-size:10px; font-weight:700; color:#718096; letter-spacing:1px; text-transform:uppercase; margin-bottom:6px; }
+  .video-title { font-size:13px; font-weight:700; color:#2D3748; line-height:1.5; }
+
+  /* 쇼츠 스크롤 리스트 */
+  .shorts-row { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; }
+  .short-card { background:#E8ECF0; border-radius:8px; overflow:hidden; border:1px solid #CBD2DA; }
+  .short-thumb { height:120px; background:#C8D0D8; display:flex; align-items:center; justify-content:center; }
+  .short-body { padding:10px 12px; }
+  .short-title { font-size:11px; font-weight:600; color:#2D3748; line-height:1.5; }
+
+  /* 칼럼 섹션 */
+  .column-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; }
+  .column-card { background:#fff; border:1px solid #CBD2DA; border-radius:10px; overflow:hidden; }
+  .column-thumb { height:130px; background:#C8D0D8; display:flex; align-items:center; justify-content:center; }
+  .column-body { padding:16px 20px; }
+  .column-source { font-size:10px; font-weight:700; color:#E53E3E; letter-spacing:1px; text-transform:uppercase; margin-bottom:6px; }
+  .column-title { font-size:13px; font-weight:700; color:#2D3748; line-height:1.5; margin-bottom:8px; }
+  .column-date { font-size:11px; color:#A0AEC0; }
+
+  /* 멘토링 신청 CTA */
+  .lib-cta { background:#F4F6F8; padding:56px 40px; text-align:center; border-top:1px solid #E8ECF0; }
+  .lib-cta h3 { font-size:22px; font-weight:800; color:#2D3748; margin-bottom:10px; }
+  .lib-cta p { font-size:13px; color:#718096; line-height:1.7; margin-bottom:28px; max-width:480px; margin-left:auto; margin-right:auto; }
+  .lib-cta-btns { display:flex; gap:12px; justify-content:center; }
+  .btn-primary { background:#4A5568; color:#fff; padding:12px 28px; border-radius:4px; font-size:13px; font-weight:700; text-decoration:none; display:inline-block; }
+  .btn-secondary { border:1.5px solid #4A5568; color:#4A5568; padding:12px 28px; border-radius:4px; font-size:13px; font-weight:600; text-decoration:none; display:inline-block; }
+
+  /* FOOTER */
+  .footer { background:#2D3748; border-top:1px solid #4A5568; padding:40px; }
+  .footer-inner { display:flex; justify-content:space-between; }
+  .footer-brand .logo { font-size:14px; font-weight:800; color:#fff; margin-bottom:8px; }
+  .footer-brand p { font-size:11px; color:#718096; line-height:1.8; }
+  .footer-links { display:flex; gap:40px; }
+  .footer-links .col h5 { font-size:11px; font-weight:700; color:#A0AEC0; margin-bottom:12px; text-transform:uppercase; }
+  .footer-links .col a { display:block; font-size:12px; color:#718096; margin-bottom:6px; text-decoration:none; }
+  .footer-bottom { border-top:1px solid #4A5568; margin-top:24px; padding-top:16px; font-size:11px; color:#718096; text-align:center; }
+</style>
+</head>
+<body>
+
+<div class="doc-header">
+  <div>
+    <div class="project">멘토라이브러리 홈페이지 화면설계서 v1.0</div>
+    <div class="screen-title">SCR-010 · 라이브러리 (Library +)</div>
+  </div>
+  <div class="meta">플랫폼: Web (아임웹)<br>작성일: 2026-03-11 | v1.0</div>
+</div>
+
+<div class="spec-area">
+  <div class="spec-title"><span class="badge">화면 명세</span> SCR-010 라이브러리</div>
+  <table>
+    <tr><th>화면 ID</th><td>SCR-010</td><th>URL</th><td>/library</td></tr>
+    <tr><th>목적</th><td colspan="3">청년 멘토링 지원 철학 소개 + 전준수 대표 영상/칼럼 콘텐츠 허브 + 10-10 Club CSR 활동 + 청년 멘토링 신청 유도</td></tr>
+    <tr><th>주요 CTA</th><td colspan="3">청년 멘토링 신청 / 기업 멘토링 도입 문의</td></tr>
+    <tr><th>참고 URL</th><td colspan="3">https://mentorlibrary.co.kr/library</td></tr>
+  </table>
+</div>
+
+<div class="spec-area">
+  <div class="spec-title"><span class="badge">컴포넌트 명세</span></div>
+  <table>
+    <tr><th>컴포넌트</th><th>타입</th><th>필수</th><th>설명 / 아임웹 구현</th></tr>
+    <tr><td>페이지 헤더</td><td>Dark Hero</td><td class="req">✅</td><td>"LIBRARY + / 사람을 연결하고, 생각을 확장하는 공간" 헤드라인</td></tr>
+    <tr><td>청년 멘토링 철학 (3가지)</td><td>Icon Card Grid</td><td class="req">✅</td><td>COURSE / STRENGTH / TRUST — 각 카드에 키워드·제목·설명</td></tr>
+    <tr><td>10-10 Club 섹션</td><td>2-col (이미지+텍스트)</td><td class="req">✅</td><td>수익·시간 10% 사회 환원 CSR 내용. 통계 숫자 포함</td></tr>
+    <tr><td>대표 영상 콘텐츠</td><td>Video Grid (YouTube 임베드)</td><td class="req">✅</td><td>대표 영상 2개 (Featured) + 쇼츠형 카드 5개. 아임웹 동영상 섹션</td></tr>
+    <tr><td>한국경제 칼럼 리스트</td><td>Card Grid (3열)</td><td class="req">✅</td><td>전준수 대표 한국경제 칼럼 4편+. 외부 링크 연결</td></tr>
+    <tr><td>청년 멘토링 신청 CTA</td><td>CTA Banner</td><td class="req">✅</td><td>"청년 멘토링 신청" + "기업 도입 문의" 버튼 2개</td></tr>
+  </table>
+</div>
+
+<div class="spec-area">
+  <div class="spec-title"><span class="badge">연결 화면</span></div>
+  <table>
+    <tr><th>액션</th><th>이동 화면</th></tr>
+    <tr><td>영상 클릭</td><td>YouTube 외부 링크 (새 탭)</td></tr>
+    <tr><td>칼럼 클릭</td><td>한국경제 외부 링크 (새 탭)</td></tr>
+    <tr><td>청년 멘토링 신청</td><td>SCR-008 문의 페이지 (유형: 청년 멘토링)</td></tr>
+    <tr><td>기업 도입 문의</td><td>SCR-008 문의 페이지 (유형: 기업 서비스)</td></tr>
+  </table>
+</div>
+
+<div class="annotations">
+  <h4>⚠ 아임웹 구현 주의사항</h4>
+  <ul>
+    <li>영상 섹션: 아임웹 동영상 섹션에서 YouTube URL 입력. Featured 2개는 별도 섹션, 쇼츠 5개는 갤러리형 섹션으로 구성</li>
+    <li>칼럼 리스트: 아임웹 게시판 또는 갤러리 섹션 활용. 한국경제 원문 링크 연결</li>
+    <li>10-10 Club 통계 수치(참여 청년 수 등): 실제 데이터 제공 필요</li>
+    <li>청년 멘토링 신청 CTA: 문의 폼에 "관심 서비스" 항목에 '청년 멘토링' 자동 선택되어 이동하도록 URL 파라미터 활용 권장</li>
+  </ul>
+</div>
+
+<hr class="divider">
+
+<div class="wf-area">
+  <div class="wf-label">📐 와이어프레임 — SCR-010 라이브러리</div>
+  <div class="wf-frame">
+
+    <!-- GNB -->
+    <div class="gnb">
+      <div class="logo"><a href="SCR-001_home.html" style="text-decoration:none;color:inherit;">MENTOR LIBRARY</a></div>
+      <div class="nav">
+        <div class="nav-dropdown">
+          <a href="SCR-002-005_services.html#scr002">서비스 ▾</a>
+          <div class="nav-dropdown-menu">
+            <a href="SCR-002-005_services.html#scr002">리더십과 전략</a>
+            <a href="SCR-002-005_services.html#scr003">인재경영</a>
+            <a href="SCR-002-005_services.html#scr004">Self as Enterprise</a>
+            <a href="SCR-002-005_services.html#scr005">청년 멘토링</a>
+          </div>
+        </div>
+        <a href="SCR-006-008_mentor-cases-contact.html#scr006">멘토단</a>
+        <a href="SCR-009_class.html">클래스</a>
+        <a href="SCR-010_library.html" class="active">라이브러리</a>
+        <a href="SCR-006-008_mentor-cases-contact.html#scr007">고객 사례</a>
+      </div>
+      <a href="SCR-006-008_mentor-cases-contact.html#scr008" class="gnb-cta">무료 상담 신청</a>
+    </div>
+    <div class="breadcrumb"><a href="SCR-001_home.html">홈</a> > <span>라이브러리</span></div>
+
+    <!-- ① 페이지 헤더 -->
+    <div class="page-header">
+      <div class="ph-tag">LIBRARY +</div>
+      <h1>사람을 연결하고, 생각을 확장하는 공간</h1>
+      <p>한 사람의 진심이, 한 사람의 인생을 바꿉니다.<br>
+      전문성과 따뜻함을 겸비한 멘토와 변화의 계기가 필요한 청년들을 연결합니다.</p>
+    </div>
+
+    <!-- ② 청년 멘토링 철학 3가지 -->
+    <div class="section">
+      <div class="section-label">청년 멘토링 철학</div>
+      <div class="section-title">우리가 청년 멘토링을 하는 이유</div>
+      <div class="section-sub">어디서부터 시작해야 할지 모르는 청년들에게, 멘토라이브러리는 방향과 가능성을 연결합니다.</div>
+      <div class="philosophy-grid">
+        <div class="philosophy-card">
+          <div class="ph-icon">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 3L4 8v11h14V8L11 3z" stroke="#4A5568" stroke-width="1.5" fill="none"/><rect x="8" y="13" width="6" height="6" rx="1" stroke="#4A5568" stroke-width="1.5" fill="none"/></svg>
+          </div>
+          <div class="ph-keyword">COURSE</div>
+          <div class="ph-title">어디서부터 시작해야 할지<br>몰랐던 청년이</div>
+          <div class="ph-desc">멘토링을 통해 구체적인 진로의 그림을 그리게 됩니다. 막연했던 미래가 선명한 방향이 됩니다.</div>
+        </div>
+        <div class="philosophy-card">
+          <div class="ph-icon">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 4l2 5h5l-4 3 1.5 5L11 14l-4.5 3L8 12 4 9h5L11 4z" stroke="#4A5568" stroke-width="1.5" fill="none"/></svg>
+          </div>
+          <div class="ph-keyword">STRENGTH</div>
+          <div class="ph-title">막막한 현실 앞에서<br>주저앉던 청년이</div>
+          <div class="ph-desc">멘토의 안내로 나만의 강점을 다시 발견합니다. 약점에 집중하지 않고, 강점을 성장의 출발점으로 삼습니다.</div>
+        </div>
+        <div class="philosophy-card">
+          <div class="ph-icon">
+            <svg width="22" height="22" viewBox="0 0 22 22" fill="none"><path d="M11 4C7.13 4 4 7.13 4 11s3.13 7 7 7 7-3.13 7-7-3.13-7-7-7z" stroke="#4A5568" stroke-width="1.5" fill="none"/><path d="M8 11l2 2 4-4" stroke="#4A5568" stroke-width="1.5"/></svg>
+          </div>
+          <div class="ph-keyword">TRUST</div>
+          <div class="ph-title">누구와도 이야기할 수 없던<br>고민을</div>
+          <div class="ph-desc">믿을 수 있는 멘토와 나누며, 자신을 다시 믿게 됩니다. 연결은 변화로, 변화는 성장으로 이어집니다.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ③ 10-10 Club -->
+    <div class="club-section">
+      <div class="club-inner">
+        <div class="club-img">
+          <svg width="60" height="48" viewBox="0 0 60 48" fill="none"><circle cx="20" cy="18" r="8" stroke="#718096" stroke-width="2" fill="none"/><path d="M4 42c0-8.84 7.16-16 16-16s16 7.16 16 16" stroke="#718096" stroke-width="2" fill="none"/><circle cx="40" cy="18" r="8" stroke="#718096" stroke-width="2" fill="none" stroke-dasharray="3 2"/><path d="M36 42c0-4 2-8 4-11" stroke="#718096" stroke-width="2" fill="none" stroke-dasharray="3 2"/></svg>
+        </div>
+        <div class="club-content">
+          <div class="club-tag">10-10 Club · CSR</div>
+          <div class="club-title">멘토링의 선한 영향력</div>
+          <div class="club-sub">멘토라이브러리는 수익과 시간의 10%를 사회 변화에 투자합니다.<br>고립된 청년, 성장 기회를 잃은 세대에게 다시 연결의 기회를 만듭니다.</div>
+          <div class="club-stat-row">
+            <div class="club-stat">
+              <div class="num">10%</div>
+              <div class="unit">수익 환원</div>
+            </div>
+            <div class="club-stat">
+              <div class="num">10%</div>
+              <div class="unit">시간 환원</div>
+            </div>
+            <div class="club-stat">
+              <div class="num">○○명+</div>
+              <div class="unit">지원 청년</div>
+            </div>
+          </div>
+          <div class="club-desc">
+            연결은 '변화'로 이어집니다. 멘토링은 단순한 조언이 아닌,<br>
+            청년이 세상과 다시 연결되는 전환의 경험입니다.<br>
+            우리는 이 연결이, 청년 한 사람을 넘어 사회 전체를 변화시킬 수 있다고 믿습니다.
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ④ 대표 영상 콘텐츠 -->
+    <div class="section">
+      <div class="section-label">Video Contents</div>
+      <div class="section-title">멘토의 시선으로 시대를 말하다</div>
+      <div class="section-sub">조직과 인재에 대한 전준수 대표의 철학과 전략을 영상으로 만나보세요.</div>
+
+      <!-- Featured 영상 2개 -->
+      <div class="video-grid" style="margin-bottom:32px;">
+        <div class="video-card video-featured" style="grid-column:1/2;">
+          <div class="video-thumb featured">
+            <div class="play-btn">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M6 4l9 5-9 5V4z" fill="#4A5568"/></svg>
+            </div>
+          </div>
+          <div class="video-body">
+            <div class="video-category">격동의 시대 인재전략</div>
+            <div class="video-title">격동의 시대에서의 인재전략 — DINNO 2024 HR TECH CONNECTING DAYS 연사 강연</div>
+          </div>
+        </div>
+        <div class="video-card video-featured" style="grid-column:2/3;">
+          <div class="video-thumb featured">
+            <div class="play-btn">
+              <svg width="18" height="18" viewBox="0 0 18 18" fill="none"><path d="M6 4l9 5-9 5V4z" fill="#4A5568"/></svg>
+            </div>
+          </div>
+          <div class="video-body">
+            <div class="video-category">MZ 성과관리</div>
+            <div class="video-title">몰입·성과·성장에 이르는 New 성과평가 — 前 이랜드 전준수 CHO</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 쇼츠형 카드 5개 -->
+      <div class="section-label" style="margin-bottom:12px;">💡 짧게 보는 인사이트 (Shorts)</div>
+      <div class="shorts-row">
+        <div class="short-card">
+          <div class="short-thumb">
+            <div style="width:32px;height:32px;background:#A0AEC0;border-radius:50%;display:flex;align-items:center;justify-content:center;">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 2l7 4-7 4V2z" fill="#fff"/></svg>
+            </div>
+          </div>
+          <div class="short-body"><div class="short-title">면접 탈락을 피드백 하는 법</div></div>
+        </div>
+        <div class="short-card">
+          <div class="short-thumb">
+            <div style="width:32px;height:32px;background:#A0AEC0;border-radius:50%;display:flex;align-items:center;justify-content:center;">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 2l7 4-7 4V2z" fill="#fff"/></svg>
+            </div>
+          </div>
+          <div class="short-body"><div class="short-title">직장에서 무조건 인정받는 방법 2가지</div></div>
+        </div>
+        <div class="short-card">
+          <div class="short-thumb">
+            <div style="width:32px;height:32px;background:#A0AEC0;border-radius:50%;display:flex;align-items:center;justify-content:center;">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 2l7 4-7 4V2z" fill="#fff"/></svg>
+            </div>
+          </div>
+          <div class="short-body"><div class="short-title">내 강점을 알아야 하는 이유</div></div>
+        </div>
+        <div class="short-card">
+          <div class="short-thumb">
+            <div style="width:32px;height:32px;background:#A0AEC0;border-radius:50%;display:flex;align-items:center;justify-content:center;">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 2l7 4-7 4V2z" fill="#fff"/></svg>
+            </div>
+          </div>
+          <div class="short-body"><div class="short-title">일처리가 빠른 사람들의 특징</div></div>
+        </div>
+        <div class="short-card">
+          <div class="short-thumb">
+            <div style="width:32px;height:32px;background:#A0AEC0;border-radius:50%;display:flex;align-items:center;justify-content:center;">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 2l7 4-7 4V2z" fill="#fff"/></svg>
+            </div>
+          </div>
+          <div class="short-body"><div class="short-title">이직해도 정착하기 어려운 이유</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ⑤ 한국경제 칼럼 -->
+    <div class="section section-alt">
+      <div class="section-label">Column</div>
+      <div class="section-title">전준수 대표의 한국경제신문 칼럼</div>
+      <div class="section-sub">시대를 읽는 리더의 관점. 인재·조직·리더십에 대한 깊은 통찰을 담았습니다.</div>
+      <div class="column-grid">
+        <div class="column-card">
+          <div class="column-thumb">
+            <svg width="40" height="28" viewBox="0 0 40 28" fill="none"><rect x="4" y="4" width="32" height="20" rx="2" stroke="#A0AEC0" stroke-width="1.5" fill="none"/><path d="M9 10h22M9 14h16M9 18h10" stroke="#A0AEC0" stroke-width="1.5"/></svg>
+          </div>
+          <div class="column-body">
+            <div class="column-source">한국경제 비즈니스 인사이트</div>
+            <div class="column-title">실패한 부하를 책망하지 말라</div>
+            <div class="column-date">2023.05.07</div>
+          </div>
+        </div>
+        <div class="column-card">
+          <div class="column-thumb">
+            <svg width="40" height="28" viewBox="0 0 40 28" fill="none"><rect x="4" y="4" width="32" height="20" rx="2" stroke="#A0AEC0" stroke-width="1.5" fill="none"/><path d="M9 10h22M9 14h16M9 18h10" stroke="#A0AEC0" stroke-width="1.5"/></svg>
+          </div>
+          <div class="column-body">
+            <div class="column-source">한국경제 비즈니스 인사이트</div>
+            <div class="column-title">세대가 아니라 시대에 집중하자</div>
+            <div class="column-date">2023.04.02</div>
+          </div>
+        </div>
+        <div class="column-card">
+          <div class="column-thumb">
+            <svg width="40" height="28" viewBox="0 0 40 28" fill="none"><rect x="4" y="4" width="32" height="20" rx="2" stroke="#A0AEC0" stroke-width="1.5" fill="none"/><path d="M9 10h22M9 14h16M9 18h10" stroke="#A0AEC0" stroke-width="1.5"/></svg>
+          </div>
+          <div class="column-body">
+            <div class="column-source">한국경제 비즈니스 인사이트</div>
+            <div class="column-title">A급 인재는 먼저 제안한다</div>
+            <div class="column-date">2023.03.05</div>
+          </div>
+        </div>
+        <div class="column-card">
+          <div class="column-thumb">
+            <svg width="40" height="28" viewBox="0 0 40 28" fill="none"><rect x="4" y="4" width="32" height="20" rx="2" stroke="#A0AEC0" stroke-width="1.5" fill="none"/><path d="M9 10h22M9 14h16M9 18h10" stroke="#A0AEC0" stroke-width="1.5"/></svg>
+          </div>
+          <div class="column-body">
+            <div class="column-source">한국경제 비즈니스 인사이트</div>
+            <div class="column-title">불황은 우수 인재 영입의 가장 좋은 기회다</div>
+            <div class="column-date">2023.02.05</div>
+          </div>
+        </div>
+        <div class="column-card" style="border:2px dashed #CBD2DA;background:#F4F6F8;">
+          <div class="column-thumb" style="background:#E8ECF0;">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none"><circle cx="16" cy="16" r="12" stroke="#A0AEC0" stroke-width="1.5" fill="none"/><path d="M16 10v12M10 16h12" stroke="#A0AEC0" stroke-width="1.5"/></svg>
+          </div>
+          <div class="column-body" style="text-align:center;padding-top:20px;">
+            <div style="font-size:12px;color:#A0AEC0;">칼럼 추가 예정</div>
+            <div style="font-size:11px;color:#CBD2DA;margin-top:4px;">소재 제공 후 업데이트</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ⑥ 청년 멘토링 CTA -->
+    <div class="lib-cta">
+      <div class="section-label" style="text-align:center;margin-bottom:12px;">청년 멘토링</div>
+      <h3>멘토를 만난 청년은 다시 가능성을 발견합니다</h3>
+      <p>멘토라이브러리는 그 가능성을 연결하고 확장하는 플랫폼이 되겠습니다.<br>
+      진로가 막막한 청년이라면, 지금 바로 시작하세요.</p>
+      <div class="lib-cta-btns">
+        <a href="SCR-006-008_mentor-cases-contact.html#scr008" class="btn-primary">청년 멘토링 신청하기</a>
+        <a href="SCR-006-008_mentor-cases-contact.html#scr008" class="btn-secondary">기업·기관 도입 문의</a>
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="footer">
+      <div class="footer-inner">
+        <div class="footer-brand">
+          <div class="logo"><a href="SCR-001_home.html" style="text-decoration:none;color:inherit;">MENTOR LIBRARY</a></div>
+          <p>서울 강남구 케이씨빌딩<br>contact@mentorlibrary.co.kr<br>사업자등록번호: 225-87-03252</p>
+        </div>
+        <div class="footer-links">
+          <div class="col">
+            <h5>서비스</h5>
+            <a href="SCR-002-005_services.html#scr002">리더십과 전략</a>
+            <a href="SCR-002-005_services.html#scr003">인재경영</a>
+            <a href="SCR-002-005_services.html#scr004">Self as Enterprise</a>
+            <a href="SCR-002-005_services.html#scr005">청년 멘토링</a>
+          </div>
+          <div class="col">
+            <h5>콘텐츠</h5>
+            <a href="SCR-009_class.html">클래스</a>
+            <a href="SCR-010_library.html">라이브러리</a>
+            <a href="SCR-006-008_mentor-cases-contact.html#scr006">멘토단</a>
+            <a href="SCR-006-008_mentor-cases-contact.html#scr007">고객 사례</a>
+          </div>
+          <div class="col">
+            <h5>법적 고지</h5>
+            <a href="#">개인정보처리방침</a>
+            <a href="#">이용약관</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">© 2026 멘토라이브러리. All rights reserved. &nbsp;|&nbsp; <a href="INDEX_sitemap-flow.html" style="color:#A0AEC0;text-decoration:none;">📋 화면설계서 인덱스</a></div>
+    </div>
+
+  </div><!-- /wf-frame -->
+</div><!-- /wf-area -->
+
+</body>
+</html>
