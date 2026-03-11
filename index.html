@@ -57,6 +57,17 @@
   .impl-table td, .impl-table th { padding:10px 16px; border-bottom:1px solid #E8ECF0; font-size:12px; }
   .impl-table th { background:#F4F6F8; font-weight:700; color:#4A5568; }
   .impl-table tr:last-child td { border-bottom:none; }
+
+  /* GNB 드롭다운 */
+  .nav-dropdown { position:relative; display:inline-block; }
+  .nav-dropdown-menu { display:none; position:absolute; top:calc(100% + 8px); left:0; background:#fff; border:1px solid #CBD2DA; border-radius:6px; box-shadow:0 8px 24px rgba(0,0,0,0.12); min-width:180px; z-index:999; padding:6px 0; }
+  .nav-dropdown-menu a { display:block !important; padding:9px 18px !important; font-size:12px !important; color:#4A5568 !important; text-decoration:none !important; white-space:nowrap; border-bottom:none !important; }
+  .nav-dropdown-menu a:hover { background:#F4F6F8; color:#2D3748 !important; }
+  .nav-dropdown:hover .nav-dropdown-menu { display:block; }
+  .gnb .nav a, .gnb .logo a { text-decoration:none; }
+  .gnb a.gnb-cta { text-decoration:none; cursor:pointer; }
+  .svc-tab { text-decoration:none; display:inline-block; }
+
 </style>
 </head>
 <body>
@@ -88,59 +99,59 @@
     </div>
     <div class="screen-item">
       <div class="scr-id">SCR-001</div>
-      <div class="scr-name">메인 (Home)</div>
+      <div class="scr-name"><a href="SCR-001_home.html" style="color:#2D3748;text-decoration:none;font-weight:700;">메인 (Home) →</a></div>
       <div class="scr-url">/</div>
       <div class="scr-priority p-high">높음</div>
-      <div class="scr-file">SCR-001_home.html</div>
+      <div class="scr-file"><a href="SCR-001_home.html" style="color:#4A5568;text-decoration:underline;">SCR-001_home.html</a></div>
     </div>
     <div class="screen-item">
       <div class="scr-id">SCR-002</div>
-      <div class="scr-name">서비스 — 리더십과 전략</div>
+      <div class="scr-name"><a href="SCR-002-005_services.html#scr002" style="color:#2D3748;text-decoration:none;font-weight:700;">서비스 — 리더십과 전략 →</a></div>
       <div class="scr-url">/service/leadership</div>
       <div class="scr-priority p-high">높음</div>
-      <div class="scr-file">SCR-002-005_services.html</div>
+      <div class="scr-file"><a href="SCR-002-005_services.html#scr002" style="color:#4A5568;text-decoration:underline;">SCR-002-005_services.html</a></div>
     </div>
     <div class="screen-item">
       <div class="scr-id">SCR-003</div>
-      <div class="scr-name">서비스 — 인재경영</div>
+      <div class="scr-name"><a href="SCR-002-005_services.html#scr003" style="color:#2D3748;text-decoration:none;font-weight:700;">서비스 — 인재경영 →</a></div>
       <div class="scr-url">/service/talent</div>
       <div class="scr-priority p-high">높음</div>
-      <div class="scr-file">SCR-002-005_services.html</div>
+      <div class="scr-file"><a href="SCR-002-005_services.html#scr002" style="color:#4A5568;text-decoration:underline;">SCR-002-005_services.html</a></div>
     </div>
     <div class="screen-item">
       <div class="scr-id">SCR-004</div>
-      <div class="scr-name">서비스 — Self as Enterprise</div>
+      <div class="scr-name"><a href="SCR-002-005_services.html#scr004" style="color:#2D3748;text-decoration:none;font-weight:700;">서비스 — Self as Enterprise →</a></div>
       <div class="scr-url">/service/self</div>
       <div class="scr-priority p-high">높음</div>
-      <div class="scr-file">SCR-002-005_services.html</div>
+      <div class="scr-file"><a href="SCR-002-005_services.html#scr002" style="color:#4A5568;text-decoration:underline;">SCR-002-005_services.html</a></div>
     </div>
     <div class="screen-item">
       <div class="scr-id">SCR-005</div>
-      <div class="scr-name">서비스 — 청년 멘토링</div>
+      <div class="scr-name"><a href="SCR-002-005_services.html#scr005" style="color:#2D3748;text-decoration:none;font-weight:700;">서비스 — 청년 멘토링 →</a></div>
       <div class="scr-url">/service/youth</div>
       <div class="scr-priority p-high">높음</div>
-      <div class="scr-file">SCR-002-005_services.html</div>
+      <div class="scr-file"><a href="SCR-002-005_services.html#scr002" style="color:#4A5568;text-decoration:underline;">SCR-002-005_services.html</a></div>
     </div>
     <div class="screen-item">
       <div class="scr-id">SCR-006</div>
-      <div class="scr-name">멘토단</div>
+      <div class="scr-name"><a href="SCR-006-008_mentor-cases-contact.html#scr006" style="color:#2D3748;text-decoration:none;font-weight:700;">멘토단 →</a></div>
       <div class="scr-url">/mentors</div>
       <div class="scr-priority p-high">높음</div>
-      <div class="scr-file">SCR-006-008_mentor-cases-contact.html</div>
+      <div class="scr-file"><a href="SCR-006-008_mentor-cases-contact.html#scr006" style="color:#4A5568;text-decoration:underline;">SCR-006-008_mentor-cases-contact.html</a></div>
     </div>
     <div class="screen-item">
       <div class="scr-id">SCR-007</div>
-      <div class="scr-name">고객 사례</div>
+      <div class="scr-name"><a href="SCR-006-008_mentor-cases-contact.html#scr007" style="color:#2D3748;text-decoration:none;font-weight:700;">고객 사례 →</a></div>
       <div class="scr-url">/cases</div>
       <div class="scr-priority p-med">중간</div>
-      <div class="scr-file">SCR-006-008_mentor-cases-contact.html</div>
+      <div class="scr-file"><a href="SCR-006-008_mentor-cases-contact.html#scr006" style="color:#4A5568;text-decoration:underline;">SCR-006-008_mentor-cases-contact.html</a></div>
     </div>
     <div class="screen-item">
       <div class="scr-id">SCR-008</div>
-      <div class="scr-name">문의 (Contact)</div>
+      <div class="scr-name"><a href="SCR-006-008_mentor-cases-contact.html#scr008" style="color:#2D3748;text-decoration:none;font-weight:700;">문의 (Contact) →</a></div>
       <div class="scr-url">/contact</div>
       <div class="scr-priority p-high">높음</div>
-      <div class="scr-file">SCR-006-008_mentor-cases-contact.html</div>
+      <div class="scr-file"><a href="SCR-006-008_mentor-cases-contact.html#scr006" style="color:#4A5568;text-decoration:underline;">SCR-006-008_mentor-cases-contact.html</a></div>
     </div>
   </div>
 </div>

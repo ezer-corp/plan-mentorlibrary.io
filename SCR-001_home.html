@@ -135,6 +135,17 @@
 
   /* 구분선 */
   .divider { border:none; border-top:1px solid #E8ECF0; margin:0 32px; }
+
+  /* GNB 드롭다운 */
+  .nav-dropdown { position:relative; display:inline-block; }
+  .nav-dropdown-menu { display:none; position:absolute; top:calc(100% + 8px); left:0; background:#fff; border:1px solid #CBD2DA; border-radius:6px; box-shadow:0 8px 24px rgba(0,0,0,0.12); min-width:180px; z-index:999; padding:6px 0; }
+  .nav-dropdown-menu a { display:block !important; padding:9px 18px !important; font-size:12px !important; color:#4A5568 !important; text-decoration:none !important; white-space:nowrap; border-bottom:none !important; }
+  .nav-dropdown-menu a:hover { background:#F4F6F8; color:#2D3748 !important; }
+  .nav-dropdown:hover .nav-dropdown-menu { display:block; }
+  .gnb .nav a, .gnb .logo a { text-decoration:none; }
+  .gnb a.gnb-cta { text-decoration:none; cursor:pointer; }
+  .svc-tab { text-decoration:none; display:inline-block; }
+
 </style>
 </head>
 <body>
@@ -216,14 +227,22 @@
 
     <!-- GNB -->
     <div class="gnb">
-      <div class="logo">MENTOR LIBRARY</div>
+      <div class="logo"><a href="SCR-001_home.html" style="text-decoration:none;color:inherit;">MENTOR LIBRARY</a></div>
       <div class="nav">
-        <a href="#">서비스 ▾</a>
-        <a href="#">멘토단</a>
-        <a href="#">고객 사례</a>
-        <a href="#">문의</a>
+        <div class="nav-dropdown">
+          <a href="SCR-002-005_services.html#scr002">서비스 ▾</a>
+          <div class="nav-dropdown-menu">
+            <a href="SCR-002-005_services.html#scr002">리더십과 전략</a>
+            <a href="SCR-002-005_services.html#scr003">인재경영</a>
+            <a href="SCR-002-005_services.html#scr004">Self as Enterprise</a>
+            <a href="SCR-002-005_services.html#scr005">청년 멘토링</a>
+          </div>
+        </div>
+        <a href="SCR-006-008_mentor-cases-contact.html#scr006">멘토단</a>
+        <a href="SCR-006-008_mentor-cases-contact.html#scr007">고객 사례</a>
+        <a href="SCR-006-008_mentor-cases-contact.html#scr008">문의</a>
       </div>
-      <div class="gnb-cta">무료 상담 신청</div>
+      <a href="SCR-006-008_mentor-cases-contact.html#scr008" class="gnb-cta">무료 상담 신청</a>
     </div>
 
     <!-- HERO -->
@@ -233,8 +252,8 @@
         <div class="hero-headline">조직의 경쟁력은<br>사람에서 시작됩니다</div>
         <div class="hero-sub">리더십, 인재경영, 커리어 전략 — 멘토라이브러리가 당신의 조직을 다음 단계로 이끕니다</div>
         <div class="hero-btns">
-          <div class="btn-primary">기업 서비스 알아보기</div>
-          <div class="btn-secondary">무료 상담 신청</div>
+          <a href="SCR-002-005_services.html#scr002" class="btn-primary" style="text-decoration:none;">기업 서비스 알아보기</a>
+          <a href="SCR-006-008_mentor-cases-contact.html#scr008" class="btn-secondary" style="text-decoration:none;">무료 상담 신청</a>
         </div>
       </div>
       <div class="hero-visual">
@@ -282,7 +301,7 @@
           </div>
           <h4>리더십과 전략</h4>
           <p>전략을 실행으로 연결하는 리더십 프로그램</p>
-          <div class="link-more">자세히 보기 →</div>
+          <a href="SCR-002-005_services.html#scr002" class="link-more" style="text-decoration:none;">자세히 보기 →</a>
         </div>
         <div class="service-card">
           <div class="svc-icon">
@@ -290,7 +309,7 @@
           </div>
           <h4>인재경영</h4>
           <p>인재를 비용이 아닌 조직의 가장 강력한 경쟁우위로</p>
-          <div class="link-more">자세히 보기 →</div>
+          <a href="SCR-002-005_services.html#scr003" class="link-more" style="text-decoration:none;">자세히 보기 →</a>
         </div>
         <div class="service-card">
           <div class="svc-icon">
@@ -298,7 +317,7 @@
           </div>
           <h4>Self as Enterprise</h4>
           <p>커리어를 하나의 기업처럼 전략적으로 경영하세요</p>
-          <div class="link-more">자세히 보기 →</div>
+          <a href="SCR-002-005_services.html#scr004" class="link-more" style="text-decoration:none;">자세히 보기 →</a>
         </div>
         <div class="service-card">
           <div class="svc-icon">
@@ -306,7 +325,7 @@
           </div>
           <h4>청년 멘토링</h4>
           <p>현장 전문가와 성장을 원하는 청년의 진짜 연결</p>
-          <div class="link-more">자세히 보기 →</div>
+          <a href="SCR-002-005_services.html#scr005" class="link-more" style="text-decoration:none;">자세히 보기 →</a>
         </div>
       </div>
     </div>
@@ -332,6 +351,7 @@
       <div class="section-label">Mentors</div>
       <div class="section-title">현업 최전선 전문가들</div>
       <div class="section-sub">각 분야의 최전선에서 활동하는 전문가들이 멘토라이브러리와 함께합니다</div>
+      <div style="text-align:right;margin-bottom:24px;"><a href="SCR-006-008_mentor-cases-contact.html#scr006" style="font-size:12px;color:#4A5568;font-weight:600;border-bottom:1px solid #4A5568;text-decoration:none;">멘토단 전체보기 →</a></div>
       <div class="mentor-cards">
         <div class="mentor-card">
           <div class="mentor-photo">
@@ -416,7 +436,7 @@
     <div class="bottom-cta">
       <h2>조직의 변화, 지금 시작하세요</h2>
       <p>첫 상담은 무료입니다. 조직의 고민이 무엇이든, 이야기에서 시작합니다.</p>
-      <div class="btn-white">무료 상담 신청하기</div>
+      <a href="SCR-006-008_mentor-cases-contact.html#scr008" class="btn-white" style="text-decoration:none;">무료 상담 신청하기</a>
     </div>
 
     <!-- FOOTER -->
@@ -424,7 +444,7 @@
       <div class="footer-inner">
         <div class="footer-brand">
           <div class="logo">MENTOR LIBRARY</div>
-          <p>서울 강남구 케이씨빌딩<br>contact@mentorlibrary.co.kr<br>사업자등록번호: 000-00-00000</p>
+          <p>서울 강남구 케이씨빌딩<br><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="9ffcf0f1ebfefcebdff2faf1ebf0edf3f6fdedfeede6b1fcf0b1f4ed">[email&#160;protected]</a><br>사업자등록번호: 000-00-00000</p>
         </div>
         <div class="footer-links">
           <div class="col">
@@ -447,11 +467,4 @@
           </div>
         </div>
       </div>
-      <div class="footer-bottom">© 2026 멘토라이브러리. All rights reserved.</div>
-    </div>
-
-  </div><!-- /wf-frame -->
-</div><!-- /wf-area -->
-
-</body>
-</html>
+      <div class="footer-bottom">© 2026 
